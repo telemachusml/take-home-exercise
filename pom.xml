@@ -11,7 +11,7 @@
 	<groupId>io.armory.services</groupId>
 	<artifactId>telemachus</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>telemachus</name>
+	<name>person</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
