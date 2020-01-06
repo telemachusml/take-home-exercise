@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.armory.services</groupId>
-	<artifactId>telemachus</artifactId>
+	<artifactId>telemachusml</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>person</name>
 	<description>Demo project for Spring Boot</description>
