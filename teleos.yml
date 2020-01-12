@@ -1,0 +1,4399 @@
+#  X 64.124.7.0/27     - for TOR assignments (split into /30s)
+# 10 64.124.6.32/27    - CloudBuilder/NAT
+# 11 64.124.6.64/27    - Public Services
+# 12 64.124.6.96/27    - Public Services (Storage)
+# 13 64.124.6.128/27   - DLR Network
+# 14 64.124.7.10/24    - Floating Network
+# 10.20.0.2/24      - MaaS
+# 10.21.0.2/24      - Cobbler
+# 10.22.0.2/24      - OPS Physical
+# 10.23.0.2/24      - OPS Virtual
+# 10.24.0.2/24      - Storage
+# 10.25.0.2/24      - Tunnels
+
+# cidrs available in tele env
+# 64.124.6.0/24, 64.124.7.0/24, 64.124.220.0/24. 
+
+
+
+chef:
+
+  chef_ip: &chef_ip 10.20.0.10
+
+  chef_url: &chef_url https://10.20.0.10:8443/
+
+  chef_admin_client_key: &chef_admin_client_key |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAtWCrBMu+M16iDm21ynQM04V7jx3XkK8F5iBY6mPknQoDJ2Ew
+    WdkIRCOb7aLi8RnUpgj1j5bYBor+MUlK0qyxXyuClnYYxB9v21noGukAcJACg9ul
+    PV6HUqHxMs8tYKu44JXwoWac3LbHoNdxB3GnqfFK7v3RVV6ckuQRLsbJIvqLztFn
+    0BDb+qZoqbA8v5vOJiLT6ElDefJs6XK65Pqy40AM7hZLgbh/Tdb83/V63YGDOeGW
+    oS/Gbx187QqxQycyA/AyIxUVhT6Rr4FnaVoSkzQzEzAZJS3xa0CogJXjdVdRUoHb
+    71U8kd7jiZhi1hmvYgdNGocKFqlNNqUbYKm1iwIDAQABAoIBAA5iwm248zcD1Hqs
+    fPS3y6SjO6+YQFa7aw5blnHQxnsmJiXjcYBO1HcDFAT/HFzfHZylrURcRHoQYCTs
+    mUCobdEMlGj2qPQ1Qhv1v5ES1fQXl/t5WlvJuZX2Pjk3cXPvatR1UAadKufen2rE
+    a7SZcSDrgHQAMbBBts13xV0eaymY72qJWp1HBKzdl7Cm5NavemAFQ4qHW9TY/zJs
+    XGC48PmHmB20zqIUMl9JqLdx4K7bNJGn2isUSfBr6VxR3ueLdkcDw9duUh6QPUZ7
+    yPvCuM59vHweriPFMa4HKEGy9ChPhRZx1uEPNmRgMkse6KdUTo3JtNgCW+yra+Dk
+    hShe+KECgYEA5TQHe7sNKfhSVqLLBYNrZ8yrLOrRsR+cvPvmeiPAft7eeXEbZ5Nm
+    bl5zae2sw8pFGhblO72npYcvWVG5ePxU1beDRAtkAbntaYQCvcjhh7YNFhY93cB0
+    z/HJREpP3gOw9TokoF5+Yf+3655iH+3VeGEkZAdQfUzMsP+PINyLlcMCgYEAypU8
+    H/XO5ui0ko6AFPpgN+HoKQUB2N5IfHD3xl17IRT/4dRm7XEWQTmn7rGKaG+7gNUm
+    hX5AeCQ4H3VVl43rlcx5ANjXUTbcWDO3bK2V90CDEEnqVtpECsJpyNYUFtDqKDAO
+    kKAA8Kex0dVJLzIX/o8CGokn+a2f6Fb644WWvJkCgYAnx0XdNXNta0lu+8XcaRiE
+    5UJ4AzDtWp0rN1Sisf3AhxF5ZiXpbe2DDiVdpwAq4rnncz3JhnrIAZQ4HjTgSHq4
+    tKa1cnyiyA/qFh0brvdlRDU1Nhr6l2IujLnvfi4qS920Uaj1pDCu9WCIJe7Ft9Mq
+    l0FnktVnSaLkvRWsEFqxXQKBgFSHpMjpNmYfX4lvsH4QYymuN8M19alaRwC12o2I
+    4CHTs1m12STmdRTOTAZLSqd9R83gIuy824XGBy0JNqfAbjbZVPxHfsDClXqwSa8t
+    V1AOOSII1aFb/dxHdwB4Y3WJwsr2En3CZeIE9yvJRXpN+rkbTxNne6ixC/JUqOdb
+    DKSxAoGBAOHe7OIVwqzjLPdiI8bHK5tuo6m5QFFDrEPcGFBYpmRWeVomBFksPkwM
+    SGSyG50nRyCq4M/egOp3Oejl2yZ56ymTRof7Oqmd97zr1NPKGqgP9lYeCz0yhUtg
+    KP3iuQVPqTp+9uK3kqCUrnDvFtupkb/c/Xwt23CSOOT48DjQ+VdZ
+    -----END RSA PRIVATE KEY-----
+
+
+  chef_validation_key: &chef_validation_key |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEA8zjseVOcPFTtDOyssmbh+JhorSRsy6sExlAr6zDNgy+XHs6I
+    0YX8P4dINRiCWpw4Os/Uhx7gCjFsUxfiE4iVRa+ZKILaxAQ2L01G07WkvTPziYBu
+    sUx5VNBZvE6UnUFk9Ez/wsFhzNIahwDSzEixSTBOO/+19U9JLanar8ykndE7RUBt
+    c2RCUJfSyRMiLWGBKlZ1LGQR9+jcgEbog0CIIWnCLURX7nzfo+Iy5fjy0I8my68M
+    WeHgp3FgxLFRXS3DrrRRtnVK0Zmo97U25oKyYS+khjUvFCdkjyPDaXwG2w3eG0m9
+    AdM2cxwRK5YhPRaOg0H6WTkHQE4dttnBuTHMdwIDAQABAoIBAQCEfKZ7dGrvhkdW
+    OfnceCRxWPv0DJpi2vaP3A4AYCYiZqMH+fMXRsfgBx3zJjWji+MpThpzvALIKqHa
+    JXFVuJmvSva/1X+7NJwbahnBqvlgwtLPPLGPTJvu8ktfQuK7QmrulJ7hBJv0iSJA
+    Fde9xX8k4fZLwn/ob1bqU9K23l9xQv8PTW71iIpbaHmkvKKqMkqGFl5W1Qc7bTBj
+    l3gWzjsWm2cKz2YNjgSDkrUclD7+/zdgsIeLxhQa6M7TKKWxbXPeWwKqwpBvkKee
+    fuChSnZ0D9M2wF7HQKjwJ3t7rutkghg6Fz4DUfFFFK3ALykO0cYF7dJ111eLZ47C
+    oxshYYGBAoGBAPqJ7X5QE12WEP0g9Vp+QVRLR7ry3HXfxb1G1wMxp68OYZ/gK+1H
+    7UpaSF1saKK5Mt824ONN0l4zJudbIFtRvHqwhXqGUqE4UlaKaWpvEh9/zrHA/886
+    50I4fa1Achcl0kbtX8/m9kni5GOT0nezq7Df+MFJFlylzx3FsoTu7gjBAoGBAPiG
+    KyAqstgJRChaGasJcD4FlM8c1Ba3X/vxvA4IusK81P4QcHbG+T2++4joRKO9crVB
+    m3O3n7pS+19CfNrARjpYAjcAmMLtEJHNw9HqVX2Omd7LdvM1qwoATlu5xQWXSkHd
+    Iq84xEQFg9mz+6x6IUNXDwUL5+k8yKjpmmRkdas3AoGBAIUBRDuSdzVvvYUkQhzQ
+    eg4uCN6On8tUCL37JZpkegjNMbaWY7uMO8UFOPWf38zDVOZ7U9hYMB4iOb0I+5x/
+    P/hCThpFxQghxlR7FouSe6SNTUXAmA2Dz9Gv+8hGNktjoMZWrk7I5mdDNMxIZat2
+    judPf9fc3SpCPDoqAiPgVC4BAoGBAPgG/vdFZePRq6IR+dgGvWxIqbDh9pENRc/t
+    +16OO8WqK2+7/GGuRoTnG6YRGJ/JrLdU2M3uDo0n0BPMCUtP5UbJGrzF7a9sZML+
+    9lWDZvq93LbLnNUxVJfQomNMzWK9ELEW/0ycfNPeJS6aP6xs3tGUCztgHH1b2m8p
+    ZJqY4A6VAoGAcIA7BGDhshWYg62ybLllKGdzVYS0FHbXRHh9/XqVDLaRqhDZKhao
+    ZwjEn2TJq0drZr8q7jtOtYOBhTuN7OzSlOHYByKwEpUuea7ykgOJUBbb1x2Byc35
+    7x7O/QxGx/j0vPTO10FY6v0GwtKn4LRb1I/fUNzDFhTgSXO/RO9odGk=
+    -----END RSA PRIVATE KEY-----
+
+maas: 
+  api_key: &maas_api_key rU96FWyTadY8zzaSnw:FzXzygG26SbQRDF8eY:PvtXK2AJwNGrFARbwzVkPZGMRQJqsfHs
+  api_url: &maas_api_url http://64.124.6.36/MAAS/api/1.0
+
+openstack:
+
+  # credentials used to sync flavors, users, and instantiate rates
+  credentials:
+
+    api: &lb_vip_public_os_api_name api.compute.us-co01.cloud.tele.com
+    auth_url: !!python/object/apply:string.join [["https://", *lb_vip_public_os_api_name, ':35357/v2.0'], '']
+    tenant_name: admin
+    username: admin
+    password: &admin_password 5d6baead492b
+    region: us-co01
+
+  certificates:
+
+    wildcard: &certificate_wildcard |-
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEogIBAAKCAQEAnttXAG6G2UJOQ8GvafQVjkjD3okb+B4uvesmsOQbyPWUHD7o
+      Sx25cbP++idR6hZm0+xUiG89HltlAAzISFu8GoiZi7AjK41seAe9PnDc5G+DVKw6
+      tLOg1IbiTiJG9HCB73iAPLJPo8yiZcFdZmFb7G6m3p8u5Y3Ym0PnUMPBSX+MYwCu
+      t2idvwobl+bc1C5asQs7QmrwRR6dP3XSOVA7/Dzy+OjiEES5CqkG+QHH+rEzaU3l
+      OSTgpeoGvi5Bj6XTCiaZ5zIvtDhOlJVI9l6VMDzN165e80rRBklUrpWJvLeK6qGn
+      WY3AYONyohhgVC3NrfD9cQg4H2/Q6KFAoNv1gQIDAQABAoIBAAdqzmEiyAEU63qW
+      bI5R6z+9fgfB9yBaqGwNsrzHqdR0QvoepdH8DVCVyu37MAPyD9MNUdUc/ImSUuDx
+      t9hJEDtc7W5sRvgdnlbsZZWox2eTHVqyv/r3+CZ0NdTYHOAE8MwxoCs1WCqZv2to
+      3+eL3DLp57i1TgdB3D9DqGVI/plj3F4h8HOQBf5u1/7FE1lhakovD4MgrfuGK9h0
+      gRIHai5gQccErLTEC4jNE63DBAtom76JhY1HPn/3MYGuhNi5uMxevKsJbRNYWijj
+      kpxD7YZRO/pBUgyEGDyFTAj4HWcupcGtpw15MKcMJCAYnWoPZja9DT2BGyHFy+9N
+      lYb07AECgYEA0QV8IuaRvZpE+jVV5igRLVXxM9eixgUTB5e7QGuws5EXPbbIwBEM
+      26KCUZp2v9gP4+6c2ZYQps4667VgPz7y++0sgHSGw+O4PqFKLtWls/pdiKqJimTk
+      O5DW+uAbiFIVQTrzdRMJlyzsdtxKJ98EoV80CD9PeQMYB6XEOaD9dfECgYEAwo+F
+      VXp2Xm6n0ERb6cAg4sO7Lw5nshjhI1KzahqMxoMJldzb46IgFI0+wy/NeWAmO86U
+      l/OpKNeK110hytP/WHGuDJVMCgjvXygFielLTXI2FbM54yB1lGdDdGNhCy4PTVcM
+      1qg2Awi60UDkLjHUfHFEfS3YJkYYZXJBWZxGqJECgYBQjPSR3pk7oEAEzJkV4Ur9
+      ValmeStZdIso2ehnoxitmrSCK/ahTfDOk4n1OLmapQE6rbH0iEhSgBdkzrkQpomt
+      XHFR75Yf15ohSLb15Y++FDYHfPEUTF1IN0Eh3Uu+9SMLyFQaQgPoJn/aLnrFcsSu
+      C6pZo0xVLkQMbm14Z/pFgQKBgAhJ5PxHQ1OykyOkReYncT8353mRu4ky1iSTGWGj
+      z+uFGZtw1U1VUtiNS+c02iQZnIdfvaTblJFQ3XFfXlktvusdrLSMh7jFuKztH49I
+      iRS7kOJLyGOMtnWkEJOcyD2ZsL0ywDFE6Ugnzw2rHg15wfurN6e9lD/NLKzluTMA
+      HWKBAoGAYbIgnc0f3jnIol+wZaVC2DdFH6jC+0zCSaypaH8xSnOFHT61vjLhQyXP
+      mCE78pgZ+0zc5eO0beChP3tytE68E4b+l0HwDZWLYixA7QKoxg81b/qnSFZUMp1C
+      GDnI/xsEV4RbcByhYzWxsEiAtofCyu73vyAJGrQ99X9wLX+MFiI=
+      -----END RSA PRIVATE KEY-----
+      -----BEGIN CERTIFICATE-----
+      MIIFYTCCBEmgAwIBAgIIUvs+5Sq2TUAwDQYJKoZIhvcNAQELBQAwgbQxCzAJBgNV
+      BAYTAlVTMRAwDgYDVQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMRow
+      GAYDVQQKExFHb0RhZGR5LmNvbSwgSW5jLjEtMCsGA1UECxMkaHR0cDovL2NlcnRz
+      LmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMTMwMQYDVQQDEypHbyBEYWRkeSBTZWN1
+      cmUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IC0gRzIwHhcNMTYwMTI2MTY1MjM4WhcN
+      MTgwMTI2MTY1MjM4WjBQMSEwHwYDVQQLExhEb21haW4gQ29udHJvbCBWYWxpZGF0
+      ZWQxKzApBgNVBAMMIiouY29tcHV0ZS51cy1jbzAxLmNsb3VkLnR1bGl2YS5jb20w
+      ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCe21cAbobZQk5Dwa9p9BWO
+      SMPeiRv4Hi696yaw5BvI9ZQcPuhLHblxs/76J1HqFmbT7FSIbz0eW2UADMhIW7wa
+      iJmLsCMrjWx4B70+cNzkb4NUrDq0s6DUhuJOIkb0cIHveIA8sk+jzKJlwV1mYVvs
+      bqbeny7ljdibQ+dQw8FJf4xjAK63aJ2/ChuX5tzULlqxCztCavBFHp0/ddI5UDv8
+      PPL46OIQRLkKqQb5Acf6sTNpTeU5JOCl6ga+LkGPpdMKJpnnMi+0OE6UlUj2XpUw
+      PM3Xrl7zStEGSVSulYm8t4rqoadZjcBg43KiGGBULc2t8P1xCDgfb9DooUCg2/WB
+      AgMBAAGjggHYMIIB1DAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMB
+      BggrBgEFBQcDAjAOBgNVHQ8BAf8EBAMCBaAwNwYDVR0fBDAwLjAsoCqgKIYmaHR0
+      cDovL2NybC5nb2RhZGR5LmNvbS9nZGlnMnMxLTE4NS5jcmwwUwYDVR0gBEwwSjBI
+      BgtghkgBhv1tAQcXATA5MDcGCCsGAQUFBwIBFitodHRwOi8vY2VydGlmaWNhdGVz
+      LmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMHYGCCsGAQUFBwEBBGowaDAkBggrBgEF
+      BQcwAYYYaHR0cDovL29jc3AuZ29kYWRkeS5jb20vMEAGCCsGAQUFBzAChjRodHRw
+      Oi8vY2VydGlmaWNhdGVzLmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvZ2RpZzIuY3J0
+      MB8GA1UdIwQYMBaAFEDCvSeOzDSDMKIz1/tss/C0LIDOME8GA1UdEQRIMEaCIiou
+      Y29tcHV0ZS51cy1jbzAxLmNsb3VkLnR1bGl2YS5jb22CIGNvbXB1dGUudXMtY28w
+      MS5jbG91ZC50dWxpdmEuY29tMB0GA1UdDgQWBBQlotEQuu0r9WgUwcAG00CsM8H0
+      gDANBgkqhkiG9w0BAQsFAAOCAQEAh4N/6oP0Sxw9qzfKo4w8sSmncMcRmUYKg7CS
+      0pxU7TwYf+IzpW5farV7LyTzaulvERYbpprVsvarKQfTErtc0H1OVYU7pJMgxZPv
+      tJYoTG98hCas+KT6lr71RQkIMhq1tUDslszWChA9D3uqxleqBrU6JbqNdyK5WvJW
+      HHe50+xWeHtXL/nI31X+ij3ZdrSII4G767Qkg0tB2ElUPyvuFiodXSosxr83hRLj
+      l5AakjOvv1p+6gxfxo8eT8+yyPEkMa30uKtIqiM0jp6xFPiVme6v+E+E3OTucxTJ
+      DdBcYhLtIvP56rgEJuIu016DKsUqDy05DfRFay8dPhBf7zlmAg==
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIE0DCCA7igAwIBAgIBBzANBgkqhkiG9w0BAQsFADCBgzELMAkGA1UEBhMCVVMx
+      EDAOBgNVBAgTB0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxGjAYBgNVBAoT
+      EUdvRGFkZHkuY29tLCBJbmMuMTEwLwYDVQQDEyhHbyBEYWRkeSBSb290IENlcnRp
+      ZmljYXRlIEF1dGhvcml0eSAtIEcyMB4XDTExMDUwMzA3MDAwMFoXDTMxMDUwMzA3
+      MDAwMFowgbQxCzAJBgNVBAYTAlVTMRAwDgYDVQQIEwdBcml6b25hMRMwEQYDVQQH
+      EwpTY290dHNkYWxlMRowGAYDVQQKExFHb0RhZGR5LmNvbSwgSW5jLjEtMCsGA1UE
+      CxMkaHR0cDovL2NlcnRzLmdvZGFkZHkuY29tL3JlcG9zaXRvcnkvMTMwMQYDVQQD
+      EypHbyBEYWRkeSBTZWN1cmUgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IC0gRzIwggEi
+      MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC54MsQ1K92vdSTYuswZLiBCGzD
+      BNliF44v/z5lz4/OYuY8UhzaFkVLVat4a2ODYpDOD2lsmcgaFItMzEUz6ojcnqOv
+      K/6AYZ15V8TPLvQ/MDxdR/yaFrzDN5ZBUY4RS1T4KL7QjL7wMDge87Am+GZHY23e
+      cSZHjzhHU9FGHbTj3ADqRay9vHHZqm8A29vNMDp5T19MR/gd71vCxJ1gO7GyQ5HY
+      pDNO6rPWJ0+tJYqlxvTV0KaudAVkV4i1RFXULSo6Pvi4vekyCgKUZMQWOlDxSq7n
+      eTOvDCAHf+jfBDnCaQJsY1L6d8EbyHSHyLmTGFBUNUtpTrw700kuH9zB0lL7AgMB
+      AAGjggEaMIIBFjAPBgNVHRMBAf8EBTADAQH/MA4GA1UdDwEB/wQEAwIBBjAdBgNV
+      HQ4EFgQUQMK9J47MNIMwojPX+2yz8LQsgM4wHwYDVR0jBBgwFoAUOpqFBxBnKLbv
+      9r0FQW4gwZTaD94wNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8v
+      b2NzcC5nb2RhZGR5LmNvbS8wNQYDVR0fBC4wLDAqoCigJoYkaHR0cDovL2NybC5n
+      b2RhZGR5LmNvbS9nZHJvb3QtZzIuY3JsMEYGA1UdIAQ/MD0wOwYEVR0gADAzMDEG
+      CCsGAQUFBwIBFiVodHRwczovL2NlcnRzLmdvZGFkZHkuY29tL3JlcG9zaXRvcnkv
+      MA0GCSqGSIb3DQEBCwUAA4IBAQAIfmyTEMg4uJapkEv/oV9PBO9sPpyIBslQj6Zz
+      91cxG7685C/b+LrTW+C05+Z5Yg4MotdqY3MxtfWoSKQ7CC2iXZDXtHwlTxFWMMS2
+      RJ17LJ3lXubvDGGqv+QqG+6EnriDfcFDzkSnE3ANkR/0yBOtg2DZ2HKocyQetawi
+      DsoXiWJYRBuriSUBAA/NxBti21G00w9RKpv0vHP8ds42pM3Z2Czqrpv1KrKQ0U11
+      GIo/ikGQI31bS/6kA1ibRrLDYGCD+H1QQc7CoZDDu+8CL9IVVO5EFdkKrqeKM+2x
+      LXY2JtwE65/3YR8V3Idv7kaWKK2hJn0KCacuBKONvPi8BDAB
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIEfTCCA2WgAwIBAgIDG+cVMA0GCSqGSIb3DQEBCwUAMGMxCzAJBgNVBAYTAlVT
+      MSEwHwYDVQQKExhUaGUgR28gRGFkZHkgR3JvdXAsIEluYy4xMTAvBgNVBAsTKEdv
+      IERhZGR5IENsYXNzIDIgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkwHhcNMTQwMTAx
+      MDcwMDAwWhcNMzEwNTMwMDcwMDAwWjCBgzELMAkGA1UEBhMCVVMxEDAOBgNVBAgT
+      B0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxGjAYBgNVBAoTEUdvRGFkZHku
+      Y29tLCBJbmMuMTEwLwYDVQQDEyhHbyBEYWRkeSBSb290IENlcnRpZmljYXRlIEF1
+      dGhvcml0eSAtIEcyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv3Fi
+      CPH6WTT3G8kYo/eASVjpIoMTpsUgQwE7hPHmhUmfJ+r2hBtOoLTbcJjHMgGxBT4H
+      Tu70+k8vWTAi56sZVmvigAf88xZ1gDlRe+X5NbZ0TqmNghPktj+pA4P6or6KFWp/
+      3gvDthkUBcrqw6gElDtGfDIN8wBmIsiNaW02jBEYt9OyHGC0OPoCjM7T3UYH3go+
+      6118yHz7sCtTpJJiaVElBWEaRIGMLKlDliPfrDqBmg4pxRyp6V0etp6eMAo5zvGI
+      gPtLXcwy7IViQyU0AlYnAZG0O3AqP26x6JyIAX2f1PnbU21gnb8s51iruF9G/M7E
+      GwM8CetJMVxpRrPgRwIDAQABo4IBFzCCARMwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
+      HQ8BAf8EBAMCAQYwHQYDVR0OBBYEFDqahQcQZyi27/a9BUFuIMGU2g/eMB8GA1Ud
+      IwQYMBaAFNLEsNKR1EwRcbNhyz2h/t2oatTjMDQGCCsGAQUFBwEBBCgwJjAkBggr
+      BgEFBQcwAYYYaHR0cDovL29jc3AuZ29kYWRkeS5jb20vMDIGA1UdHwQrMCkwJ6Al
+      oCOGIWh0dHA6Ly9jcmwuZ29kYWRkeS5jb20vZ2Ryb290LmNybDBGBgNVHSAEPzA9
+      MDsGBFUdIAAwMzAxBggrBgEFBQcCARYlaHR0cHM6Ly9jZXJ0cy5nb2RhZGR5LmNv
+      bS9yZXBvc2l0b3J5LzANBgkqhkiG9w0BAQsFAAOCAQEAWQtTvZKGEacke+1bMc8d
+      H2xwxbhuvk679r6XUOEwf7ooXGKUwuN+M/f7QnaF25UcjCJYdQkMiGVnOQoWCcWg
+      OJekxSOTP7QYpgEGRJHjp2kntFolfzq3Ms3dhP8qOCkzpN1nsoX+oYggHFCJyNwq
+      9kIDN0zmiN/VryTyscPfzLXs4Jlet0lUIDyUGAzHHFIYSaRt4bNYC8nY7NmuHDKO
+      KHAN4v6mF56ED71XcLNa6R+ghlO773z/aQvgSMO3kwvIClTErF0UZzdsyqUvMQg3
+      qm5vjLyb4lddJIGvl5echK1srDdMZvNhkREg5L4wn3qkKQmw4TRfZHcYQFHfjDCm
+      rw==
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIEADCCAuigAwIBAgIBADANBgkqhkiG9w0BAQUFADBjMQswCQYDVQQGEwJVUzEh
+      MB8GA1UEChMYVGhlIEdvIERhZGR5IEdyb3VwLCBJbmMuMTEwLwYDVQQLEyhHbyBE
+      YWRkeSBDbGFzcyAyIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTA0MDYyOTE3
+      MDYyMFoXDTM0MDYyOTE3MDYyMFowYzELMAkGA1UEBhMCVVMxITAfBgNVBAoTGFRo
+      ZSBHbyBEYWRkeSBHcm91cCwgSW5jLjExMC8GA1UECxMoR28gRGFkZHkgQ2xhc3Mg
+      MiBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTCCASAwDQYJKoZIhvcNAQEBBQADggEN
+      ADCCAQgCggEBAN6d1+pXGEmhW+vXX0iG6r7d/+TvZxz0ZWizV3GgXne77ZtJ6XCA
+      PVYYYwhv2vLM0D9/AlQiVBDYsoHUwHU9S3/Hd8M+eKsaA7Ugay9qK7HFiH7Eux6w
+      wdhFJ2+qN1j3hybX2C32qRe3H3I2TqYXP2WYktsqbl2i/ojgC95/5Y0V4evLOtXi
+      EqITLdiOr18SPaAIBQi2XKVlOARFmR6jYGB0xUGlcmIbYsUfb18aQr4CUWWoriMY
+      avx4A6lNf4DD+qta/KFApMoZFv6yyO9ecw3ud72a9nmYvLEHZ6IVDd2gWMZEewo+
+      YihfukEHU1jPEX44dMX4/7VpkI+EdOqXG68CAQOjgcAwgb0wHQYDVR0OBBYEFNLE
+      sNKR1EwRcbNhyz2h/t2oatTjMIGNBgNVHSMEgYUwgYKAFNLEsNKR1EwRcbNhyz2h
+      /t2oatTjoWekZTBjMQswCQYDVQQGEwJVUzEhMB8GA1UEChMYVGhlIEdvIERhZGR5
+      IEdyb3VwLCBJbmMuMTEwLwYDVQQLEyhHbyBEYWRkeSBDbGFzcyAyIENlcnRpZmlj
+      YXRpb24gQXV0aG9yaXR5ggEAMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQAD
+      ggEBADJL87LKPpH8EsahB4yOd6AzBhRckB4Y9wimPQoZ+YeAEW5p5JYXMP80kWNy
+      OO7MHAGjHZQopDH2esRU1/blMVgDoszOYtuURXO1v0XJJLXVggKtI3lpjbi2Tc7P
+      TMozI+gciKqdi0FuFskg5YmezTvacPd+mSYgFFQlq25zheabIZ0KbIIOqPjCDPoQ
+      HmyW74cNxA9hi63ugyuV+I6ShHI56yDqg+2DzZduCLzrTia2cyvk0/ZM/iZx4mER
+      dEr/VxqHD3VILs9RaRegAhJhldXRQLIQTO7ErBBDpqWeCtWVYpoNz4iCxTIM5Cuf
+      ReYNnyicsbkqWletNw+vHX/bvZ8=
+      -----END CERTIFICATE-----
+
+
+  flavors:  
+    - name: m1.tiny
+      ram: 512
+      vcpus: 1
+      disk: 15
+      id: 2
+      ephemeral: 0
+      rxtx-factor: 2
+      is-public: true
+    - name: m1.small
+      ram: 2048
+      vcpus: 1
+      disk: 20
+      id: 2
+      ephemeral: 0
+      rxtx-factor: 1
+      is-public: true
+    - name: m1.medium
+      ram: 4096
+      vcpus: 2
+      disk: 40
+      id: 3
+      ephemeral: 0
+      rxtx-factor: 1
+      is-public: true
+    - name: m1.large
+      ram: 8192
+      vcpus: 4
+      disk: 80
+      id: 4
+      ephemeral: 0
+      rxtx-factor: 1
+      is-public: true
+    - name: m1.xlarge
+      ram: 16384
+      vcpus: 8
+      disk: 160
+      id: 5
+      ephemeral: 0
+      rxtx-factor: 1
+      is-public: true
+
+  rating:
+    # define pricing here for each flavor (by name), images (by name)
+    # and any other thing we can bill on, like cinder and object storage
+    # and floating IPs
+    # cloud storage price per GB        
+    # volume price per GB
+
+    - instance_size_section:
+        m1.tiny: 0.008
+        m1.small: 0.023
+        m1.medium: 0.045
+        m1.large: 0.090
+        m1.xlarge: 0.180
+
+    - image_section: {}
+
+    - floating_ip_section:
+        cost_floating_ip: 1.0
+
+    - network_inbound_section:
+        cost_network_inbound: 0.0
+
+    - network_outbound_section:
+        cost_network_outbound: 0.02
+
+    - cloud_storage_section:
+        cost_cloud_storage: 0.04
+
+    - volume_section:
+        cost_volume: 0.04
+
+  roles: 
+    # note that admin, service, and _member_ are 
+    # created automatically so do not need to exist
+    # here - any roles here should be created
+    - operator
+    - read-only
+
+  tenants:
+    - name: tele
+      description: tele, Inc.
+      extra:
+        address_street: 2399 Blake St., Suite 150
+        address_city: Denver
+        address_state: CO
+        address_zip: 80205
+        address_country: US
+        billing_balance: 0.00
+      quotas:
+        neutron:
+          floatingip: 100
+          port: 300
+        nova:
+          instances: 200
+          key_pairs: 200
+
+  users:
+    - name: alanmeadows
+      tenant: tele
+      password: alanmeadows
+      email: alan.meadows@gmail.com
+      roles: [ "operator", "_member_" ]
+
+network:
+
+  # these are administrative 
+  # cidr blocks we will whitelist
+  # for various things
+  cidr_whitelist: &cidr_whitelist
+    - 127.0.0.0/8
+    - 10.0.0.0/9
+    - 64.124.6.0/24
+
+  # load balancer vips
+  # 64.124.6.64/27    - Public Services
+  lb_vip_public_cidr: &lb_vip_public_cidr 64.124.6.64/27
+  lb_vip_private_cidr: &lb_vip_private_cidr 10.23.0.0/24
+  lb_vip_public_os_api: &lb_vip_public_os_api 64.124.6.68
+  lb_vip_public_os_api_name: *lb_vip_public_os_api_name
+  lb_vip_public_os_monitoring: &lb_vip_public_os_monitoring 64.124.6.69
+  lb_vip_public_ns_api: &lb_vip_public_ns_api 64.124.6.70
+  lb_vip_public_ns_api_name: &lb_vip_public_ns_api_name ns-api.compute.us-co01.cloud.tele.com
+  lb_vip_public_ns_gui: &lb_vip_public_ns_gui 64.124.6.71
+  lb_vip_public_ns_signup: &lb_vip_public_ns_signup 64.124.6.72
+  lb_vip_public_ns_docs: &lb_vip_public_ns_docs 64.124.6.73
+  lb_vip_private: &lb_vip_private 10.23.0.254
+
+dns:
+
+  public_dns_servers: &id001
+    - 8.8.8.8
+    - 4.4.2.2
+  dns_infra_servers: &id002
+    - dns1.us-co01.cloud.tele.com,64.124.6.74
+    - dns2.us-co01.cloud.tele.com,64.124.6.75
+    - dns3.us-co01.cloud.tele.com,64.124.6.76
+  dns_tenant_servers: &id003
+    # these should be inside the public domain but outside
+    # the tenant domain
+    - tenant-dns1.compute.us-co01.cloud.tele.com,64.124.6.77
+    - tenant-dns2.compute.us-co01.cloud.tele.com,64.124.6.78
+    - tenant-dns3.compute.us-co01.cloud.tele.com,64.124.6.79
+  domain_name_templates: &id004
+    public: &domain_name_templates_public compute.us-co01.cloud.tele.com
+    internal: int.compute.us-co01.cloud.tele.com
+    tenant: dns.compute.us-co01.cloud.tele.com
+    contact: support@zeusconsulting.com
+    # the auto domain must be inside the tenant zone above
+    auto: auto.dns.compute.us-co01.cloud.tele.com
+    global_ttl: 300
+  bind_zones: &id005
+    - compute.us-co01.cloud.tele.com
+    - in-addr.arpa
+  records: &dns_records
+    - !!python/object/apply:string.join [["docs          IN A", *lb_vip_public_ns_docs], ' ']      
+    - !!python/object/apply:string.join [["signup        IN A", *lb_vip_public_ns_signup], ' ']    
+    - !!python/object/apply:string.join [["api           IN A", *lb_vip_public_os_api], ' ']    
+    - !!python/object/apply:string.join [["monitoring    IN A", *lb_vip_public_os_monitoring], ' ']  
+    - !!python/object/apply:string.join [["dashboard     IN A", *lb_vip_public_os_api], ' ']
+    - !!python/object/apply:string.join [["ns-api        IN A", *lb_vip_public_ns_api], ' ']
+    # TODO discover this or put it behind the LB using a TCP connection type
+    - !!python/object/apply:string.join [["vpn           IN A", '64.124.6.80'], ' ']
+    # TODO discover this as it is the cloudbuilder VIP
+    - !!python/object/apply:string.join [["cloudbuilder IN A", '64.124.6.36'], ' ']
+    - !!python/object/apply:string.join [["cloudbuilder1 IN A", '64.124.6.37'], ' ']
+  reverse_records: &dns_reverse_records
+    - !!python/object/apply:string.join [['36.6.124.64          IN PTR cloudbuilder', *domain_name_templates_public, ''], '.']
+    - !!python/object/apply:string.join [['37.6.124.64          IN PTR cloudbuilder1', *domain_name_templates_public, ''], '.']
+
+power_credentials: &id010
+  username: &power_credentials_username nepho_Admin
+  password: &power_credentials_password NATuliva2015!
+
+chef_environment:
+
+  data_bags:
+
+
+    users:
+      items:
+        - id: alan
+          password: "$6$Tdgp9L39$sBdBBqRtkAl18cP7AKbwESFGDaeqfCtzAgUR/tv4GBQAbZuvfqIIBEBBZo3HY299onP13d../RtCZ8oEIxYYO0"
+          ssh_keys: ["ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAupcvPIO0FlZee1Hg8bh6mIK2cSIsd+yzrILdku35AZRDprw1gBsr6cZwMwcAcfJ8K9b09yVrNtlM98HUdxaegxJZxBuL6+aS8FVhuu7PHw5wcusPAXqXgPrkbLBoLy3yC96kT5BlwxPtsDoCQJINTT2lZEYjeFBpkdBPewrSPry9WJwEeOd70k6cFOQ4+n/pxN87vm8M4Nkgt4RwDdcQRo73emsen7IDxOe4QHd3P6Qd6VdO37jxwqfEjB+bgn/IICdOs0be99ZGGzozw5iuluT2Whwrkt2cSu0C3fM5Z45NTfAd6tF+4TkjUiz/ZZCaP4VJw60Mg/fyXTxVNEhwYw== alan@alan-laptop" ]
+          htpasswd: "$6$Tdgp9L39$sBdBBqRtkAl18cP7AKbwESFGDaeqfCtzAgUR/tv4GBQAbZuvfqIIBEBBZo3HY299onP13d../RtCZ8oEIxYYO0"
+          nagios:
+            email: alan@zeusconsulting.com
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: telemachus
+          password: "$6$P.LW6rYe$7mlGmNw6nYyywp5pZ22Y8dwbIyC1EybbBrSNrOsWPN7LWVlm.8q5m0h/9LYKwRetRGWa.nSGzbOPMbl4iROR/0"
+          ssh_keys: ["ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0yIYuA4Qn13bmhO5uZ+qFeyNDtVQuSl0OPsI05PISHAyJlqqCPZVZfX9Rgn9XvIMG5WbtD/7lrygqUsHMda7JBe0VJ/cKhTr+kfnGR+xIW6NwrgJctnhKUH0zgzhNvLUlF+mknqBxdVcWLXP1ieG6zV0ckKVWzq2tlfWgR9DTMd4aEMAYbNOAqhPlb/7H/ywvvrcAqtWdLZxzB1Zf0Pci/EfjkSuiVPgIH9NyLBBYzuWY2zHh5TJAQ5Y++am55aNJc1dPjHPYozxs7UR1+ZAtWzLA0l+kqg/8GKB7kbOHoelzBQo8zAeiZ474i1nZrSIlemJmfkL7KLQLFw01jqLZQ== telemachus@teletest" ]
+          htpasswd: "$6$P.LW6rYe$7mlGmNw6nYyywp5pZ22Y8dwbIyC1EybbBrSNrOsWPN7LWVlm.8q5m0h/9LYKwRetRGWa.nSGzbOPMbl4iROR/0"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: montgom
+          password: "$1$Qd.17o4y$/gG4lLUptH.HGWwKzdbVf."
+          ssh_keys: ["ssh-dss AAAAB3NzaC1kc3MAAACBAMfqBzFigVZ/KxqFpSM3w/v1lzRiv5RCaTYHpepQFQRTNNqVyXWtnXtDedxqLMoDLHOe3ZfJKUykjXLu0Iqgsy95K4+mxnWH3SgKdcIiDuPRUXVMLWuwfDKOabULzNtbJ2C9ZaWnmDxO4OuayUkDHkbfQO2kWDXmWV6wXl3DaawdAAAAFQCGLA6wInFdbMriuevK1CF6SlKVlQAAAIA3GbNaLRZTOpOXSpm7uFEP99+unEebZZfGrZ8ngcrAjwkd9Tqd2Ye9PYpX6Fp/gLX5OlTCsQO2rQAK+h5mSfjXiz57ExdYUJccJDVfoP9q77xAxsPl0OjMZ3PTRQNFJhX28mAqLtVz5R4r6/GiDK73DBUt82fgjrdxOSP6Kb3D2gAAAIB+5OF1ayeoA2IPOBpPKl937o6EAgmWMT0U37FG6eOBebw6EQSjzUiq+xeoQL/AYY6ZBZ+Ywu0kzgdZnKTccDr1WCoyqeN/+NSftrFqCUz8Kafoh4UaqN91vnZ6D2KBqR506VAliRb6GR1vhAWi626D9blJlgwd3ct8yedhZJMUow== montgom@nepho"]
+          htpasswd: "$1$Qd.17o4y$/gG4lLUptH.HGWwKzdbVf."
+          nagios:
+            email: michael@zeusconsulting.com
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: zev
+          password: "$6$ZKMHs2Sg$lmyxTMogXsdAD1K6mh10IwNflqUXswgBDHb18hSp59otRycnwngMRtXj8B2oINMZihkTa8.BDJxbmYHPDMDOJ1"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABBADFooxW9eGqikxa5jSPOR6/FDjQD38iZzdfc9tkNBmd566GHYdGCEJvvl1Q6waMR4U0oEOMaezzRoi1z3sAbtGPr6pS4kTCTkrtl8NmUI2MQCALesJm6Y0j69FWno8+HKMCPg8UCFZcIazbIAZJEmclwQd05XpnyYlEJNVliecrZrZ2G+1n1idrRUX5Bdyhz60EjPRsSQvVhg8QN6MxR2w8wIeRbcBDeixNb/V7hq36Y7+e0vAX4WWYb3NDqpzHwgXMEGfP/v24UZJ0CwNMBJS8meb2IKi6H6QX0crsQN8nJgQDrIdj1JMIVwUAqsKHOuNTKrMkSuhdau/aeN2HWnpFzOiN zev@zeusconsulting.com" ]
+          htpasswd: "$6$ZKMHs2Sg$lmyxTMogXsdAD1K6mh10IwNflqUXswgBDHb18hSp59otRycnwngMRtXj8B2oINMZihkTa8.BDJxbmYHPDMDOJ1"
+          nagios:
+            email: zev@zeusconsulting.com
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: mdolgikh
+          password: "$6$GrCcXRvN$UrTQrawHGk5WQVBDTFPnAKmy3lSuhKSqZk13ZxjwfpnZLrcp6IFbuLbLlXOkmdQzZXPUfU70rwQ9cGKCZagmz0"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxWfpILS0DurnSVRUposh2jEF+pVhfcyfdZg6E3WxUSnaznmuARaXezQGrcN8KJSfBy9ANkplr9ljZpvQm53OxbwDK7OXkfNsNaQ2QrwHx/sP1dEglfnY54n9laa8B8j+SWUNmT+3uQgsu9gz/d9n7j3fxc7UlS9TTVoxDLnS7+kDqxGJYLIekUnQoLLC+FaeXiAZ9cquxFDEnlzwvBMHIo+gGsgx1agxcXSc9yc7MFZTEE9aS0Zp/KiFiVHTrK5H1kpQk0vbsDRI5hD7I6Q5a8PFyKjkzvgLbtyDiLmECQbUX/FlHmTDHpos1I6GM4ikm/bRWi1LPJlsTHpjohtFRQ== max@dell" ]
+          htpasswd: "$6$GrCcXRvN$UrTQrawHGk5WQVBDTFPnAKmy3lSuhKSqZk13ZxjwfpnZLrcp6IFbuLbLlXOkmdQzZXPUfU70rwQ9cGKCZagmz0"
+          nagios:
+            email: max@zeusconsulting.com
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: manly
+          password: "$1$Y8Z3xrYY$sQLz54Efx4KBe8FOj/2BU0"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArNVVOs68negUMOivhygZrpzKLY5yiQJOZVCLZyUN12Wxf0SZagRY2H+isppUEMcIJIxUXUEj9sfvtlCSxh5T0BzHnIU3yv5ort8BErOi1Lur5rQIEjDwfaX5CGBimQ8Hc2VUMP4pyq774GYwJXSmibAdVoZHeZiCzQOuM9krB9Jt5AbA/dXXfvvqoejvVO+m//DiVXkd6+6zYVnUIj+ZwrbW+ffnnB9HINn7Y6M1knXY9RrrZ7qd0lhqPrLD10Kh8MDr5mY8C2/cnjngloht0+if1oP+J/jO4pZ9AFP/tt81Hn6F63bOPYqneF1Ba9aGzYeeX0Zm2vfmZTsCj8lnIQ== manly@macbook.local", "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtTM6G10PvTKj8R8ZdirkMEjKNgsEM1MWomHfvmFGeYX4do/PrFWs9imekL8qh4mNqxYaBwiakoWh1iRQi0tuIOfgHC5O7y/0GJ+qi38trnplPwkPlzAeKT5DIjLa3riHQwLSFdLj4n8q6CLtmX9pzGVT25DcKC+IvscruLbdSHMf7mo91p3Izj16t8htoZf6oFYSEIPsySlhNPocF7Tq6dz58KZHRROuNKx/1WWdPgIzruWgeFMBfacaJsrSb0SacKJBykHOtSCWg/e4kSTa3kWWpXnCfQuR+nc5PDcsBKvC0rsJLUmAXr9PXbTN3T1hprtT0Q7I5L+puCP/SLeML man" ]
+          htpasswd: "$1$Y8Z3xrYY$sQLz54Efx4KBe8FOj/2BU0"
+          nagios:
+            email: manly@zeusconsulting.com          
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create          
+        - id: div
+          password: "$6$bA7yIq.S$6z3UT/WYcpwRoALoafuWDlYG5NN8bnGaCUJkPgAbK9laeedq8RmwqJU5tj/DALn9BWpXBnd9RVqtkuhaiRnrH/"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCdlnkQ7JQRtZTOZI4w9DuPu+kCfao+Z2zZ4euaEREbWHtb6/f9Nx4clRl1C51LmgAtTekFJEA5e6nVEvhpl+/81S7r5ZftRPxU/0Z54uTG+42f/GNX1I4OA83GC7qHjY39KgQClo+EVlS1aLPO8mGjGWQdxFnR3i+7NOosD8X+OW16iQjYZ3Xaz6gdIsJRrefZeUq6uzM1iQR5bBcdT/yOcuIlxIsoGlykqEGaH066BtAluCwjhYapLEy0UWNH9OstAwP/Edc8Fv/POtixSez6XLfMTy8IkQdhwe9XDSnrDkvfZBUP8Gi52a9z/Lov9FTFWZ9u8G13ehm6kyI2o9PR div@zeusconsulting.com" ]
+          htpasswd: "$6$bA7yIq.S$6z3UT/WYcpwRoALoafuWDlYG5NN8bnGaCUJkPgAbK9laeedq8RmwqJU5tj/DALn9BWpXBnd9RVqtkuhaiRnrH/"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: yad
+          password: "$1$wBnnhB.h$76ZUXrfaTgqOpGP0M0mS3."
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDl+OCCro4dApVDnMlWKPyuENPohVFjDQ/PZoDBoJrrwhj5ei3r/5+ypbwl7gvoetbu5j4byUjsyC3qpxqhev9dXHIKP8fDrBnJkMnBy+5yKF1ezSCVVWgcJHk/6DRoLtcTa5IRkFGqnhQl4ZeyG2NvMFSHNEigj4u9z6j2Y/1sjThXggDDAH3l5IGCgIJ5oS8dqlC+K1Rbe1aF7Swhilk8jvUpavKX4vM5XZNQUHfhfqACWpc+WHKlp4mtX6dIPRvgxUq53N5h54vXHZmq7jmCY5vKoXyZcTsMXXd2bvd/8bbm6ZoRTbNjTbAc5kW2yTRv+nXarZYQeYb2FxG5VM7v yad@yad-nb" ]
+          htpasswd: "$1$wBnnhB.h$76ZUXrfaTgqOpGP0M0mS3."
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: dbean
+          password: "$1$RjPEAFfm$8ZLN/hJROPA3DjvbrR78H0"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcL/yKkd/c99ZOiU3573h11kmIzU1aV8Rylr3UpROHqW4XtLVPJPvZxq39OxEuerDDUtKsGQfhRq4zKZIhGwkKOJO/ZmPHmts9ekvwZCRXiQJ22oTsP1yRqeu3nA73/w+zLeVcGsEHnBJoZ6nXNElDho3cXj5nQMJ6JilCxFCpfZYIZrzBf4CXbtN5w4R/l8MJPPcH6s5sIODMZPy6VrAztjijJzgv1qRPEH8vXEEbcWU4027x/XX0wwu+hO9ZWCkkH9tcQzhkWZWdsB7JHJSMx1BAr7qjyx2U91hEeZvujESmoO1x64QFKYcYpKni92d7LQZLGSe5avo57mFXZar7 tele@tu-ifs-wiki" ]
+          htpasswd: "$1$RjPEAFfm$8ZLN/hJROPA3DjvbrR78H0"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: jparnell
+          password: "$1$/EXyjWhO$ik5O8SSBW1DesbIiPwTZk/"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKN8nZgmb0AQUO9WRyS5CiRnsyBxz1TQ1hH+w18zJnGfMnrcXhL/EnWRDQPLWL7cA2fVKpU+mWxcObC5QFDjUsiKMdHqgO9HZQ+NW5shjGvX2wnzqKL9/Crolbt7ooVM+5wlZ1syJLvxlLlcTZLA376oklzmwjZFXXQOMZkVUP0p3jh8O0/ZxqPC5j9vPLteg9M/KTl3cNVQOtKeyPXbwvlny7gXoCjxN2nr8WkNDqAIdcA7wgeUrHrTf1O0cCXfCuNpRLAMcNJS26+0mSoNERG4NKmEGpTveebSbY4mAemmpnBsDvmV06eL2KJOKGIwK/FwndtNSaBSXsceQK8ddN tele@tu-ifs-wiki" ]
+          htpasswd: "$1$/EXyjWhO$ik5O8SSBW1DesbIiPwTZk/"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create          
+        - id: kdiep
+          password: "$1$nxiWrPui$4Qt2dPr3vyKA4j6bu58FZ1"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDx8W2u59yVpHwA9GcBDPGKoX8Ld/Ut06mlMUX02tyv4P9zgCUd25EDUTQsqb3Pjlpb2kVjCFBTNO76V2zDx+GVVss9wIX41doWZyR7Wq63dGC3imkUqJtJE19k75X4Knv/87phAvMO2nLRj0OoQzEat3pT23XB4N6U2qSvGSMbv0kSgP+dVkOaEtJNCeKfukaVdaFj4dwEasEOKiM1himdsAX6sgmDo4eKPX803UOiLgcNITtEElJpph3XIVLwbuyUZrpXvsws/zkDI9w4jCfs3Nvl6VoNfcWq9HAbbNlq1oamAnD+pUqQPMmScEMRn7rw3aPtOUkcFmFNpo5k4/1 tele@tu-ifs-wiki" ]
+          htpasswd: "$1$nxiWrPui$4Qt2dPr3vyKA4j6bu58FZ1"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create    
+        - id: mbartels
+          password: "$1$iZRa/VAR$3/mW8/vzj9UG4y4f3KaAg0"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWu0fwHLmeXL644gK84CDY4JD6usmuZ8TGkXIAP8+qR044oFYUAPNkMRy46gtaCdG5DiDVFnaE3wrMNv/KSswRsl1OpAfQlh6v0OGx9U1x3oK945DUiWViypsDfX9Fiwwg7zZPLJQc4ItZ1hLBBN6n6YHHU27ggNUOuub1IgDE/WfpEc+qxUbgs+ng2spHek/qUJmFyma2jzkgLIdT7xdw5jNBmSmuZXcnmOhzGEVu1j2ZBNRFSftz6To7ABJiKXfBccE42stLh3lEHqiN9X94tNj+zLix+hX9OV/5w9Fg3vX0iFLcP/X5Y8K0aC++fYUlhmCHLSJOWaXn0ZAXPCeV tele@tu-ifs-wiki" ]
+          htpasswd: "$1$iZRa/VAR$3/mW8/vzj9UG4y4f3KaAg0"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: nevans
+          password: "$1$lSBawbfb$2c5GsnzPL070kYn07pH2e1"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvZtWqD6V0Lx9ySRrM/2Pr2GBobI+GWh0/K9DvZgjN6D6wwu1sRMDvj5f7RuBFJEDxykkOOl4z1bKYnkhuOdKCxC5o7EZ4EZux0izPlt7vTieN7ZeHr9VB3kpIfV9iHiXSvVzzwwhJWiXoRBjtWA7EMIvnDLG/ocZnn0STL3xTagoxnpSZp28YXX7Kb8pz0+YsmvRXCc0dolYWv0Ai9q0d437M0AfYLxMLjgPGvIxrk8jvkPiY+MUlrE9QYQ/4IZLnseHAli+WtcuhXS6FPq6p2LASUzQQYfU0jllqNbfKwL4+Be4IxnMjrQHe09SvnO+cnYEkpUDKKK51yV+tyvB7 tele@tu-ifs-wiki" ]
+          htpasswd: "$1$lSBawbfb$2c5GsnzPL070kYn07pH2e1"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: pclark
+          password: "$1$NkyLtUTI$aGYhDiy/VgJ16xn.ibu1t/"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwqjHpK289+wwgAQBFf7pvUttikvSc9z0dca8HvIW5ssCK5PUQ9dReMNORDk0uipn3lfzg+octBmWvO7PBAB9Iklt+0u2xKSjmp5GRQl3GCSdxWosIz7c8pt+G4nnBFt3K52nyb/UWO0EaQInlSHkQlvo7BzuSArMEEt+KEnPnstZ6v8n1hZNxH+QbeKdRhbsM1uIRHIhNsPEbWajbpKjGwW8KPVBriSMMXuZiqv0wczb593vwyyCQmSN6zxDQYi35/aNonJNq+dGZ5uzrVI8+Vunk/7P+mkcMYjad30ayrhK1iuZiXpAFxq/GJeS+/q9qgw9ltYxiyy/MBcG/QXtx tele@tu-ifs-wiki" ]
+          htpasswd: "$1$NkyLtUTI$aGYhDiy/VgJ16xn.ibu1t/"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: rmay
+          password: "$1$iRqEI.gz$SsP3RK9CpESvpwK30LThd/"
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk2Zhc6DZteYBWjCtPutVpczO9kyRJixDH/pH6rffH0xY+ikvHZjFncIOgm9pXEklInM0+ssHKE5S7/0WLubuNW1h1RL3Q4jXnuXFIHh9AyhtkHAJ2RM0kLrhO8KXNf4CJiF9kGUxBzGOtbgCUMnyH2Hf94B2TyTVG6c4wBPlo1TSziXpBJGLWgA4z1YZOIVT3AIo4AzOoizacw14R9KKHcybObuzquPWgy4Uyw0RDebU0W6Hgn03VpZ+h2ME9+cDieaoOGKCoDNrzoP3xgFgyxtrf6BMR1ulW0qeuoL09sF+ZH5ld5t/LMjt2Fd43EsR9B49TFta93E1HN2R/3Xrh tele@tu-ifs-wiki" ]
+          htpasswd: "$1$iRqEI.gz$SsP3RK9CpESvpwK30LThd/"
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+        - id: wnguyen
+          password: "$1$qozHpuIG$7P.t7fK6TvRDGL/pFLrCr."
+          ssh_keys: [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIi+DbEmlE4g5HjP84naD33ZCycyV1NHXV5/Z9ApRjkg8rAxUqUPQRFlL7QTxgJL5quNT83ZR5tDzc1pUltsfxTYYSH84OgYtpSEptui82dud3wttHBsS7ZALiUWUbn21vDL81R3xW8b2iwAKE6QlRKOGWt6A1FhcBZBm7ACejV6JHTcaVATPRs/1v39h963aH3CI8v7FTHmpSqHFoaPALXTOo4Hhzk+HfgnMtcuVQc8GycaNF/IfKcX88JOyiDWyBsZOkV/AgiqS/IFnLM1Ew+jXt5RaYGNMeSUprMmILvA5K14UpcLw/Uqvk01oLtyXk8+gpbHv15mKHhAp+XHSX tele@tu-ifs-wiki" ]
+          htpasswd: "$1$qozHpuIG$7P.t7fK6TvRDGL/pFLrCr."
+          groups: [ "sysadmin" ]
+          shell: "/bin/bash"
+          action: create
+
+    db_passwords:
+      encrypt: yes
+      items:
+        - id: horizon
+          horizon: cc3b90747ee5 
+        - id: glance
+          glance: 57be90747ee5
+        - id: keystone
+          keystone: 13958e5861ec
+        - id: neutron
+          neutron: ea1512157320
+        - id: nova
+          nova: db2128e4509a
+        - id: ironic
+          ironic: db2128e4509a
+        - id: heat
+          heat: cc3129e4509d
+        - id: ceilometer
+          ceilometer: ce2128e4999b
+        - id: designate
+          designate: dd2128e4888c
+        - id: designate-pool
+          designate-pool: dd2128e4888c
+        - id: cinder
+          cinder: aa2128e4888e          
+        - id: cloudkitty
+          cloudkitty: dd2128e4888c
+        - id: zeusconsulting
+          zeusconsulting: 13958e5861dd
+        - id: zeusconsulting_statistics
+          zeusconsulting_statistics: 13958e5861dd
+
+    user_passwords:
+      encrypt: yes
+      items:
+        - id: admin
+          admin: 5d6baead492b
+        - id: guest
+          guest: 5d6baead492b
+        - id: mysqlroot
+          mysqlroot: b12aeb1b72e2
+        - id: openstackmq
+          openstackmq: 13958e58cedf
+        - id: zeusconsultingmq
+          zeusconsultingmq: 13958e58cedf
+
+    service_passwords:
+      encrypt: yes
+      items:
+        - id: openstack-image
+          openstack-image: 2d41e99efc09a
+        - id: openstack-network
+          openstack-network: 2d41e99efc09a
+        - id: openstack-compute
+          openstack-compute: 2d41e99efc09a
+        - id: openstack-dashboard
+          openstack-compute: 2d41e99efc09a
+        - id: openstack-bare-metal
+          openstack-bare-metal: 2d41e99efc09a
+        - id: openstack-object-storage
+          openstack-object-storage: 2d41e99efc09a
+        - id: openstack-ceilometer
+          openstack-ceilometer: 2d41e99efc09a
+        - id: openstack-orchestration
+          openstack-orchestration: 2d41e99efc09a
+        - id: openstack-designate
+          openstack-designate: 2d41e99efc09a
+        - id: openstack-cloudkitty
+          openstack-cloudkitty: 2d41e99efc09a
+        - id: openstack-block-storage
+          openstack-block-storage: 2d41e99efc09a
+
+
+    secrets:
+      encrypt: yes
+      items:
+        - id: ipmi
+          ipmi: GSmRC6X6XSIA
+        - id: openstack_data_bag_secret
+          openstack_data_bag_secret: ath3naw1zd0m
+        - id: neutron_metadata_secret
+          neutron_metadata_secret: 2def8affc
+        - id: openstack_identity_bootstrap_token
+          openstack_identity_bootstrap_token: 2d41e9960e66
+        - id: swift_admin_auth_key
+          swift_admin_auth_key: 2d41e9960e66
+        - id: swift_hash_path_suffix
+          swift_hash_path_suffix: 2def9c
+        - id: openstack_metering_secret
+          openstack_metering_secret: 2d99cbex48
+          # this key must be 32 characters exactly
+        - id: orchestration_auth_encryption_key
+          orchestration_auth_encryption_key: 84e410795bf945919302f04887bdc9c8
+        - id: pando_log_slice_password
+          pando_log_slice_password: none
+        - id: pdu_snmp_community
+          pdu_snmp_community: none
+
+        # zeusconsulting secrets
+        - id: auth_net_login
+          auth_net_login: 49Db5yKzsu
+        - id: auth_net_transaction_key
+          auth_net_transaction_key: 87pD5T4PaMg648bZ
+        - id: console_auth_user_password
+          console_auth_user_password: DDD9666sAQbsuf00911Yuasqw1
+        - id: console_key
+          console_key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEA02Nrgd0xjfdGNX45tlBeJ7OH5SCamA+hK8CN5ytcsLQ7KyMK\npWni8KUsUsHE+cOoixvWGXioJCXNK6O0DouLVeeFEvcnRecl8cJPngfCkpReg7mE\nAjTEP1r16L52U0TOeqIRurIsZuY/k8QvwN0PziqMRZyVuZN9l3tUVR4VAfYBEc8m\n13j9k9d3xdsSljbJL3yLikTwHmMkIEcFIFtHywjdPdigsNrolmpwMOaoCVSMGUt7\nZWwFYVq0fN60D4d1QhV7icsDhLK7dRZ7wzivQZ8bYJ9oWDLJISoRspd5H8jv8mRu\nYO0g/nksg8g3UQU58EyAhbqu8lmeOMGrg+HHFwIDAQABAoIBAFUmRCUAk7iK9aYQ\nnXC5+ONnJwN92agNC7ATFVYcGm83emoK6HvvJjInZq5DTXQKg3bdlKWX+6rr6zR7\n8ci2Hz9QTkNweUpoLNmwmt+eYpsm1teav/kfhjm7Czlgl0s9eSre4+NfaBFfCBce\nvNmkcnxqmSxlQc6KAdomHLdYsb+ivCrS2yH5qNkllrUDUryj7ieJbF100WVtnEmu\n1YCccELkCR4tB+PnLS+ZRi8WUMt4jgI3ECYWeVvZjODaXQK6wssQO3Hcath3u+0r\nZtPsVzv4vke6M/RImRBJ60GFPUwygifmAAM9Q7KbwGyXGWkhdOnXKsiLKwesNaVl\nZ/b29XECgYEA6kWt+p6a9pGtcQOs/fySXkeftXaje7XUgfRIxFl/DAKct6Mz6JaD\nYj2gu/iM+7ufwSqoIGn0YpGFX7jmONlOyXPUARNbu3BBOwldcRyQpxzU4k6bknbu\nDl7yY4/taGbZcJL48S0kQIZi8DxtVjUitGeX76hUhMFE8UElB/KomQ8CgYEA5v5o\n+OVRKmLfGLPT4NYM2aeLVzyXKFcSouprKXq/GCHeKIzNy+LX6C95CLCrhQ0AkCOz\nhG/bwbRVIox9ZPIg/q5LCPbPM2WEZd7TuBC5ZfFp5ZdUTB/jdj0GVbrv0e2LpAFd\nKELQF5575G/bDwiFQwvSftmZI13IfYMldwEhoXkCgYBMTuQLpUvukqb/D+ZyWKnI\ngeX4sqsvqZuNtOda5ZfnbpZjjopi8VvcTRyk/aHWgVfZEK7w1/JdhO7/rfd3fvkV\nz1+39flERZ1JwJQqOta3SEHjcR1liM2j6rNjUMdQ4WdkLstdq4mKZvulKtmmYepq\n/u9The35zAZL2x9Xxme6awKBgFSlxjHvVt8BfF/BBlPOHMdl7ln5iiruPZYV8U8x\n+/UL9C1H6+JbLmOXgfL9St1m9l3bt11A4HcLbmdKtGjZkd3CYRzX1PYwrWPnVA6P\nkmEZJoVL/0gmJ2Sc2EVyS4/STOm81jZ6xWbiXORJWS0ZIjx/iJOTidq780yLUp9Z\nesmBAoGAVxDDCHKvBeENIy58CmoALa1A/xANDt0ZGLc3i6fMrJsXDynafS8cjYiT\nWkx4cDE7g1W9Q4LqrCWJvDWQaydmrj5apz7ObREIhHIcIy+3f0qw5VDe3RAvrtJR\nUd7t4Vwh0xXGm1i8xrCjb1q2h7gDudjk/7Ovy0R55W2aLI9f+B8=\n-----END RSA PRIVATE KEY-----"
+        - id: console_sshrsa
+          console_sshrsa: "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEA02Nrgd0xjfdGNX45tlBeJ7OH5SCamA+hK8CN5ytcsLQ7KyMK\npWni8KUsUsHE+cOoixvWGXioJCXNK6O0DouLVeeFEvcnRecl8cJPngfCkpReg7mE\nAjTEP1r16L52U0TOeqIRurIsZuY/k8QvwN0PziqMRZyVuZN9l3tUVR4VAfYBEc8m\n13j9k9d3xdsSljbJL3yLikTwHmMkIEcFIFtHywjdPdigsNrolmpwMOaoCVSMGUt7\nZWwFYVq0fN60D4d1QhV7icsDhLK7dRZ7wzivQZ8bYJ9oWDLJISoRspd5H8jv8mRu\nYO0g/nksg8g3UQU58EyAhbqu8lmeOMGrg+HHFwIDAQABAoIBAFUmRCUAk7iK9aYQ\nnXC5+ONnJwN92agNC7ATFVYcGm83emoK6HvvJjInZq5DTXQKg3bdlKWX+6rr6zR7\n8ci2Hz9QTkNweUpoLNmwmt+eYpsm1teav/kfhjm7Czlgl0s9eSre4+NfaBFfCBce\nvNmkcnxqmSxlQc6KAdomHLdYsb+ivCrS2yH5qNkllrUDUryj7ieJbF100WVtnEmu\n1YCccELkCR4tB+PnLS+ZRi8WUMt4jgI3ECYWeVvZjODaXQK6wssQO3Hcath3u+0r\nZtPsVzv4vke6M/RImRBJ60GFPUwygifmAAM9Q7KbwGyXGWkhdOnXKsiLKwesNaVl\nZ/b29XECgYEA6kWt+p6a9pGtcQOs/fySXkeftXaje7XUgfRIxFl/DAKct6Mz6JaD\nYj2gu/iM+7ufwSqoIGn0YpGFX7jmONlOyXPUARNbu3BBOwldcRyQpxzU4k6bknbu\nDl7yY4/taGbZcJL48S0kQIZi8DxtVjUitGeX76hUhMFE8UElB/KomQ8CgYEA5v5o\n+OVRKmLfGLPT4NYM2aeLVzyXKFcSouprKXq/GCHeKIzNy+LX6C95CLCrhQ0AkCOz\nhG/bwbRVIox9ZPIg/q5LCPbPM2WEZd7TuBC5ZfFp5ZdUTB/jdj0GVbrv0e2LpAFd\nKELQF5575G/bDwiFQwvSftmZI13IfYMldwEhoXkCgYBMTuQLpUvukqb/D+ZyWKnI\ngeX4sqsvqZuNtOda5ZfnbpZjjopi8VvcTRyk/aHWgVfZEK7w1/JdhO7/rfd3fvkV\nz1+39flERZ1JwJQqOta3SEHjcR1liM2j6rNjUMdQ4WdkLstdq4mKZvulKtmmYepq\n/u9The35zAZL2x9Xxme6awKBgFSlxjHvVt8BfF/BBlPOHMdl7ln5iiruPZYV8U8x\n+/UL9C1H6+JbLmOXgfL9St1m9l3bt11A4HcLbmdKtGjZkd3CYRzX1PYwrWPnVA6P\nkmEZJoVL/0gmJ2Sc2EVyS4/STOm81jZ6xWbiXORJWS0ZIjx/iJOTidq780yLUp9Z\nesmBAoGAVxDDCHKvBeENIy58CmoALa1A/xANDt0ZGLc3i6fMrJsXDynafS8cjYiT\nWkx4cDE7g1W9Q4LqrCWJvDWQaydmrj5apz7ObREIhHIcIy+3f0qw5VDe3RAvrtJR\nUd7t4Vwh0xXGm1i8xrCjb1q2h7gDudjk/7Ovy0R55W2aLI9f+B8=\n-----END RSA PRIVATE KEY-----"
+        - id: console_token_user_password
+          console_token_user_password: 1Kst61FgaIUq9oPPoOsjhdY679
+        - id: console_websocket
+          console_websocket: "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAu0C0oP5cKJWQ9NPZpl7e8JX4J3dKxkZAioWDCoQzPkRaHvz6\n5HwAXMwgPeCQBTmeLhHQQ1CaZfL5cI9j+XQCSfSx3Ft0eGXOX3838bV6CFz5uWDd\nSU3zNHERnj3pz+zG1d0y05x6DHYJFdPQST2BCswl94NHnhmuSKF6wp6mAESxXnQn\nh4w5ysq7LMktGTdudkdliMkjbLCvq96DfPeVSUGas/snH06jHt3YUhuG3J2toAiQ\nXdvFlvFhcuPTMdHo7fFjURuSAPTN7CMrlLEj9U6RHYe24Pi1kN/bNHG6jcVcfTbA\nEl9UEggmS0JEazQVsPve2vt8X1ySyu0CncKArQIDAQABAoIBABL7uFQp9UXYA94O\nLB6Ft6xER+gYW+hF7v0cE/DY/ijt3QUPOJA5UgAWYZ5kSbV95d9dxvNMFJsJSuhy\nYPxFGoZM3EsuqlwaVhWwXAeRElIOuvJkM4re8Cz82YBlXnLJ2k6MIj75uhXRUZJ4\n6sDCD3b8w0yYboZErDqIxF0+oC2enJPv45bPHPUAIaP0RdT2eptmT8T/goGSlCSf\nwjnbsYwcIZdlTqkr6zRWvDyi71fHZqmxuJqz3e3RFs1eWO/1052iVgrCUjoe+7dg\nQpUkFUvab+4UZIOegkEjx44kBPI4l6kPvGHCMM8T8T8thcquH8QeefamphP2NzD9\n0hEhDzECgYEA8PIz9mqyHhquYDos2gwQZJpC4sl/lAs5xalAlsS2FIutOjJ7s6kf\nYh7SVpmFpBtrSZocX5ZqMxY47hYgQDvkMgCQIiM8XY9j2AIIs2MvenKTnXb3eZTI\nAKuRiPBSWyeLPL08sMD1KXX0GIf25k166hXgHEaoVyQ5wsodSSYyYRcCgYEAxvO1\nMLNTuJTxaDL19K4Lxm9TJV/pj1bJxEfShnklKr811VmfRoQcSDvsqOSK8Zmipy3T\ncS/Ed3dbVfvuBgCcWnk/0nnXTnk5z0rk6bqS+/gu3IMaPBBtg296ENfxogx3s326\nCvHprqUkiFNLLRjLarXW8MXt25z+UVgBsmr1XtsCgYAkCIS+4Fv85o6Xc3vLrCwz\nb2J7WhkLQdaE+fff1FFKp0zjvDMFvlAkM2nPa6wxy6vy2OpPXUZKl5Mx//sYwBwz\nYiQsBsr7TvtmjX9RnI64KDRtQyJle1uhxgbAzPf0C+jlz4MpB+JiLfKwTH0fGg08\nvsLCV8rLJW7B88oHa3/zRwKBgQCYgWZKD5zEqD+pDS9mwSe7k8ibpLsHqpJ9yESD\n2kd4Thx5D/s89bYsVOsjyBUOACQjnMgxQlmK7k5wSe76YOt5muomcElwGRMMaK+y\nztcvGN7rIAAzPLCGCST71lyeSIpVZ7H+A9SKkILBkX/V8OS1RvCdnkunhd+ZASpD\n1yOB8wKBgQDUTUbhUpbgH66dMG6r3ydLOB/SV32okdYqiQDDYNRMpjo6pcK4pY7H\nlGdFwbj4gw/a688G2eKD6f/eQaBIn2/3QJhw+l40n5WP8eso/QB/gD6aVHMacyEj\nzL1qWSi4B3F+tsDghXY7MzcLMwjR73a6k6+LwTVxx2IYBuk9xqPaHw==\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIE/jCCA+agAwIBAgISESEGvjauu1YznQWwwAesG2s/MA0GCSqGSIb3DQEBCwUA\nMGAxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTYwNAYD\nVQQDEy1HbG9iYWxTaWduIERvbWFpbiBWYWxpZGF0aW9uIENBIC0gU0hBMjU2IC0g\nRzIwHhcNMTQwODIyMTM0MDU3WhcNMTUxMDA1MDE1MjEyWjA+MSEwHwYDVQQLExhE\nb21haW4gQ29udHJvbCBWYWxpZGF0ZWQxGTAXBgNVBAMMECoubmVwaG9zY2FsZS5j\nb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC7QLSg/lwolZD009mm\nXt7wlfgnd0rGRkCKhYMKhDM+RFoe/PrkfABczCA94JAFOZ4uEdBDUJpl8vlwj2P5\ndAJJ9LHcW3R4Zc5ffzfxtXoIXPm5YN1JTfM0cRGePenP7MbV3TLTnHoMdgkV09BJ\nPYEKzCX3g0eeGa5IoXrCnqYARLFedCeHjDnKyrssyS0ZN252R2WIySNssK+r3oN8\n95VJQZqz+ycfTqMe3dhSG4bcna2gCJBd28WW8WFy49Mx0ejt8WNRG5IA9M3sIyuU\nsSP1TpEdh7bg+LWQ39s0cbqNxVx9NsASX1QSCCZLQkRrNBWw+97a+3xfXJLK7QKd\nwoCtAgMBAAGjggHSMIIBzjAOBgNVHQ8BAf8EBAMCBaAwSQYDVR0gBEIwQDA+BgZn\ngQwBAgEwNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20v\ncmVwb3NpdG9yeS8wKwYDVR0RBCQwIoIQKi5uZXBob3NjYWxlLmNvbYIObmVwaG9z\nY2FsZS5jb20wCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9n\ncy9nc2RvbWFpbnZhbHNoYTJnMi5jcmwwgZQGCCsGAQUFBwEBBIGHMIGEMEcGCCsG\nAQUFBzAChjtodHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2Rv\nbWFpbnZhbHNoYTJnMnIxLmNydDA5BggrBgEFBQcwAYYtaHR0cDovL29jc3AyLmds\nb2JhbHNpZ24uY29tL2dzZG9tYWludmFsc2hhMmcyMB0GA1UdDgQWBBS4PB5TeSM7\nXkTNxrBPyDAkMWjnRzAfBgNVHSMEGDAWgBTqTnzUgC3lFYGGJoyCbcCYpM+XDzAN\nBgkqhkiG9w0BAQsFAAOCAQEAXJ20UeqfswrBnerrOti217gngez+u5HAz+ppohdm\nSQUHZ5e1brkwaB2+6ck4slH2r5+ag+6oRZsGIkLkOD02De/K4yiUHBc9LDWvAP1B\n0CqTGPR9Ex3YbRQH7DrU2IgAikk3tQDE4vt6MRiB1MtxUnWbHugeVnFQLGLUnW9I\nIWPIGjzMum9qIYCXcFe2elKhVMAn7qmYrvcHzm+ctErHVpEoHYPgX6H9JOZzfrRD\nwOfUfT/CBQqHHzQl1gyHy4x9YRvunbWXhsBp8W5OZsVIsiut1FyzjEHKKVm+cW80\nhR5Aags9ph4P49HXMdaKNnR18zVNqoRKDnduPieMExURDg==\n-----END CERTIFICATE-----"
+        - id: default_root_convert_password
+          default_root_convert_password: ath3naw1zd0m
+        - id: default_system_user_password
+          default_system_user_password: 447e8a9
+        - id: django_secret_key
+          django_secret_key: 'w_j(#t5b+$om-#x@1bxz!yyalo#(3ibu@u=za5^qdaufd9f%pi'
+        - id: fraud_license_key
+          fraud_license_key: DgAhwlqaECOx
+        - id: nepho_db_enc_key
+          nepho_db_enc_key: 2211bf92-cc27-49db-9314-08c45b239c36
+        - id: scribe_password
+          scribe_password: K22ca64736RTyeuus7w6te5asd898
+        - id: signup_password
+          signup_password: X22ca64736RTyeuus7w6te5asd898
+        - id: twilio_auth_token
+          twilio_auth_token: 11fefeac8a164ae3a0cde56cc01566ef
+
+    nagios_servicegroups:
+      items:
+        - id: database
+          alias: Database
+        - id: disks
+          alias: Disks
+        - id: networking
+          alias: Networking
+        - id: openstack-http
+          alias: OpenStack-HTTP
+        - id: openstack-services
+          alias: OpenStack-Services
+        - id: ops
+          alias: Operations
+
+    nagios_services:
+      items:
+
+        - id: ObjectStore_usage
+          hostgroup_name: os-object-storage-node
+          description: ObjectStore_usage
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift-diskusage -t 20"
+          servicegroups: openstack-services
+          obsess_over_service: 1
+
+        - id: Service_glance-api
+          hostgroup_name: os-image
+          description: Service_glance-api
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_glance-api -t 20"
+          servicegroups: openstack-services
+          obsess_over_service: 1
+
+        - id: Service_keystone-api
+          hostgroup_name: os-identity
+          description: Service_keystone-api
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_keystone-api -t 20"
+          servicegroups: openstack-services
+          obsess_over_service: 1
+
+        - id: all_disks
+          hostgroup_name: base
+          description: FileSpace
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_all_disks -t 20"
+          obsess_over_service: 1
+
+        - id: bind
+          hostgroup_name: infra-dns
+          description: DNS-Status_localhost
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_bind -t 20"
+          obsess_over_service: 1
+
+        - id: check_linux_bonding
+          hostgroup_name: physical-host
+          description: Network_bondstatus
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_linux_bonding -t 20"
+          obsess_over_service: 1
+
+        - id: mysql_check_connections
+          description: DB-Check-MySQL-Connections
+          hostgroup_name: os-ops-database
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_connections -t 20"
+          servicegroups: database
+          obsess_over_service: 1
+
+        - id: chef_checkins
+          hostgroup_name: chef-server
+          description: Chef_checkins
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_chef_checkins -t 20"
+          obsess_over_service: 1
+
+        #  not necessary with no DLRs
+        #- id: conntrack
+        #  hostgroup_name: os-compute-worker
+        #  description: Network_connections
+        #  command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_conntrack -t 20"
+        #  obsess_over_service: 1
+
+        - id: disk_io_checks_sda
+          hostgroup_name: physical-host
+          description: Disk_IO-sda
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_diskio_sda -t 20"
+          servicegroups: disks
+          service_template: 05minutechecks
+          obsess_over_service: 1
+
+        - id: disk_io_checks_sdb
+          hostgroup_name: physical-host
+          description: Disk_IO-sdb
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_diskio_sdb -t 20"
+          servicegroups: disks
+          service_template: 05minutechecks
+          obsess_over_service: 1
+
+        - id: disk_smart_checks
+          hostgroup_name: os-network-router
+          description: Disk_smart-check
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c disk_smart_checks -t 600"
+          servicegroups: disks
+          service_template: 15minutechecks
+          obsess_over_service: 1
+
+        - id: dlr_check
+          hostgroup_name: ops
+          description: dlr check
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c dlr_check -t 20"
+          servicegroups: ops
+          obsess_over_service: 1
+
+        - id: glance-api-port
+          hostgroup_name: os-image
+          description: Port_9292_Glance-API
+          command_line: "$USER1$/check_http -H $HOSTADDRESS$ -p 9292"
+          servicegroups: "openstack-http"
+          obsess_over_service: 1
+
+        - id: glance-registry-port
+          hostgroup_name: os-image
+          description: Port_9191_Glance-Registry
+          command_line: "$USER1$/check_tcp -H $HOSTADDRESS$ -p 9191"
+          servicegroups: openstack-services
+          obsess_over_service: 1
+
+        - id: ipmi-sensors
+          hostgroup_name: physical-host
+          description: IPMI Check
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_ipmi_sensors -t 20"
+          service_template: 15minutechecks
+          obsess_over_service: 1
+
+        - id: keystone-admin-port
+          hostgroup_name: os-identity
+          description: Port_35357_Keystone-API-Admin
+          command_line: "$USER1$/check_tcp -H $HOSTADDRESS$ -p 35357"
+          obsess_over_service: 1
+
+        - id: keystone-port
+          hostgroup_name: os-identity
+          description: Port_5000_Keystone-API-Public
+          command_line: "$USER1$/check_tcp -H $HOSTADDRESS$ -p 5000"
+          servicegroups: "openstack-http"
+          obsess_over_service: 1
+
+        - id: lock
+          hostgroup_name: ops
+          description: zeusconsulting_Lock_Service_Check
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c lock_check -t 20"
+          servicegroups: ops
+          obsess_over_service: 1
+
+        - id: mysql_innodb
+          description: DB-InnoDBPool
+          hostgroup_name: os-ops-database
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_innodb -t 20"
+          servicegroups: database
+          obsess_over_service: 1
+
+        - id: ping
+          hostgroup_name: linux
+          description: Host Alive
+          use_existing_command: check-host-alive
+          obsess_over_service: 1
+
+        - id: chefrun
+          hostgroup_name: base
+          description: Chef_chefrun
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_chefrun -t 20"
+          service_template: 15minutechecks          
+          obsess_over_service: 1 
+
+        - id: kernel_panic
+          hostgroup_name: base
+          description: Kernel_panic
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_kernel_panic -t 20"
+          service_template: 15minutechecks          
+          obsess_over_service: 1           
+
+        - id: proc_cron
+          hostgroup_name: base
+          description: Proc_cron
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_proc_cron -t 20"
+          service_template: 15minutechecks          
+          obsess_over_service: 1
+
+        - id: proc_ntpd
+          hostgroup_name: base
+          description: Proc_ntpd
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_proc_ntpd -t 20"
+          service_template: 15minutechecks          
+          obsess_over_service: 1          
+
+        - id: load_avg
+          hostgroup_name: base
+          description: CPU_Load-average
+          command_line: "$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_load_avg -t 20"
+          service_template: 15minutechecks          
+          obsess_over_service: 1       
+
+    nagios_templates:
+      items:
+        - id: 05minutechecks
+          check_interval: 300
+          retry_interval: 60
+        - id: 10minutechecks
+          check_interval: 600
+          retry_interval: 120
+        - id: 15minutechecks
+          check_interval: 900
+          retry_interval: 180
+        - id: 30minutechecks
+          check_interval: 1800
+          retry_interval: 300
+        - id: hourlychecks
+          check_interval: 3600
+          retry_interval: 300
+        - id: dailychecks
+          check_interval: 86400
+          retry_interval: 3600
+
+    nagios_timeperiods:
+      items:
+        - id: annually
+          alias: Yearly
+          times: [ "january 1 00:00-00:01" ]
+        - id: monthly
+          alias: Monthly
+          times: [ "day 1 00:00-00:01" ]
+        - id: never
+          alias: Never
+          times: []
+        - id: weekly
+          alias: Weekly
+          times: [ "monday 00:00-00:01" ]
+
+  roles:
+
+    - name: us-co01
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "This is a role that is used by all servers in this environment to override site specific settings"
+      run_list: []
+      env_run_lists: 
+        production: []
+        _default: []
+      override_attributes: 
+
+        zone: us-co01
+
+        nagios:
+          default_host:
+            notification_interval: 0 # ensures only one alert is sent out
+            notification_options: 'd'
+          default_service:
+            max_check_attempts: 10
+            notification_interval: 0 # ensures only one alert is sent out
+          pagerduty:
+            # do not notifiy on unknown (u), recovery (r), or warnings (w)
+            # to reduce notifications
+            service_notification_options: 'c'
+            host_notification_options: 'd'
+          url: monitoring.compute.us-co01.cloud.tele.com
+          sysadmin_email: telesupport@zeusconsulting.com
+
+        zeusconsulting:
+          release: tele
+          docs:
+            image-prefix: 'tele'
+            target: 'tele'
+          db:
+            username: zeusconsulting
+          db_statistics:
+            username: zeusconsulting        
+          dns:
+            public_server_list:
+              - dns1.dns.compute.us-co01.cloud.tele.com
+              - dns2.dns.compute.us-co01.cloud.tele.com
+              - dns3.dns.compute.us-co01.cloud.tele.com
+            reverse_tenant_name: admin
+          gui:
+            url: https://portal.compute.us-co01.cloud.tele.com
+          api:
+            chef_admin_client_key: *chef_admin_client_key
+            chef_validation_key: *chef_validation_key
+            url: https://api.compute.us-co01.cloud.tele.com
+            os:
+              insecure: 'True'
+            proxy:
+              enabled: 'False'
+              host: ''
+              port: '0'
+            debug: 'True'
+            debug_template: 'True'
+            email_mock: 'False'
+            mq:
+              vhost: '/zeusconsulting'
+              user: 'zeusconsultingmq'
+            twilio:
+              account_sid: AC1a30fc8b60bbf326ac4807a945febe72
+              phone_number: "+17204109014"
+            dlr:
+              image: Ubuntu Server 10.04 LTS 64-bit
+            node:
+              image: Ubuntu Server 10.04 LTS 64-bit
+              management:
+                vlan: 22
+            pxeboot_vlan: 21
+            blackhole_vlan: 28
+            servicenet:
+              cidr: 10.127.0.0
+              prefix_length: 16
+              vlan: 28
+            console:
+              host: *lb_vip_public_ns_api
+              port: 9000
+            db:
+              database_engine: django.db.backends.mysql
+              database_name: zeusconsulting
+              database_user: zeusconsulting
+              database_host: *lb_vip_private
+              database_port: '' # default
+            db_stats:
+              database_engine: django.db.backends.mysql
+              database_name: zeusconsulting_statistics
+              database_user: zeusconsulting
+              database_host: *lb_vip_private
+              database_port: '' # default
+            environment: tele
+            noreply_email: noreply@compute.us-co01.cloud.tele.com
+          console:
+            cert: 'wildcard.compute.us-co01.cloud.tele.com.pem'
+          signup:
+            noreply_email: noreply@compute.us-co01.cloud.tele.com
+            no_auto_create_for_high_risk: 'False'
+            force_review_for_all_accounts: 'False'
+            email_host: *lb_vip_private
+            media_url: '/media/'
+            welcome_subject: "Welcome to tele!"
+            welcome_html: |-
+              '<br />Thank you for choosing tele as your cloud computing services provider. ' + \
+              '<br /><br />To login to the tele Customer Portal, go to <a href="https://dashboard.compute.us-co01.cloud.tele.com">https://dashboard.compute.us-co01.cloud.tele.com</a>. Your login ' + \
+              'credentials are the username and password you selected during signup. ' + \
+              '<br /><br />We\'re here to assist you in any way we can and your satisfaction with our services is our first priority.' + \
+              '<br /><br />Best Regards,<br />' + \
+              'The tele Team<br />' + \
+              '<br />Portal Login: <a href="https://dashboard.compute.us-co01.cloud.tele.com">https://dashboard.compute.us-co01.cloud.tele.com</a><br />' + \
+              'Technical Documentation: <a href="http://docs.compute.us-co01.cloud.tele.com">http://docs.compute.us-co01.cloud.tele.com</a><br />'
+            welcome_plain: |-
+              'Welcome to tele!\r\n' + \
+              '\r\nThank you for choosing tele as your cloud computing services provider. ' + \
+              '\r\n\r\nTo login to the tele Customer Portal, go to https://dashboard.compute.us-co01.cloud.tele.com. Your login ' + \
+              'credentials are the username and password you selected during signup. ' + \
+              '\r\n\r\nWe\'re here to assist you in any way we can and your satisfaction with our services is our first priority. ' + \
+              '\r\nBest Regards,\r\n' + \
+              'The tele Team\r\n' + \
+              '\r\nPortal Login: https://dashboard.compute.us-co01.cloud.tele.com\r\n' + \
+              'Technical Documentation: http://docs.compute.us-co01.cloud.tele.com/\r\n'
+          portal:
+            brand_name: tele, Inc.
+            brand_domain: 'compute.us-co01.cloud.tele.com'
+            brand_logo: tele-logo.png
+            brand_favicon: tele-favicon.ico
+            brand_style: tele-theme.css
+            show_pricing_tables: 'False'
+            allow_storage_slices: 'False'
+            vnc_host: portal.compute.us-co01.cloud.tele.com
+            vnc_port: 6080
+            disabled_workzones:
+              - 'server/dedicated'
+              - 'dashboard/nodestats'
+              - 'datacenter/virtualrack'
+              - 'datacenter/physicalrack'
+            disable_videos_link: 'True'
+            disable_managed_services: 'True'
+            debug: 'True'
+            template_debug: 'True'
+            powered_by_logo: powered-by-tele-logo.png
+            contacts_file: tele-contacts.html
+          mobile:
+            url: 
+              https://m.compute.us-co01.cloud.tele.com
+          monitoring:
+            graphite_server_ip: 1.2.3.4
+            # all the cloudbuilder IPs - .36 is a VIP and likely would never
+            # be the source of any traffic but we put it here anyways
+            extra_allowed_hosts: [127.0.0.1, 10.23.0.38, 10.23.0.39, 64.124.6.36, 64.124.6.37, 64.124.6.38]
+          agent:
+            resolvers: ['8.8.8.8', '4.2.2.2']
+            chef_server: *chef_url
+            chef_client_rb: |-
+              log_level              :info
+              ssl_verify_mode        :verify_none
+              validation_client_name "chef-validator"
+              validation_key         "/etc/chef/validation.pem"
+              client_key             "/etc/chef/client.pem"
+              chef_server_url        "https://10.20.0.10:8443/"
+              node_name              "$node_name.int.compute.us-co01.cloud.tele.com"
+              json_attribs           "/etc/chef/firstboot.json"
+              file_cache_path        "/var/cache/chef"
+              file_backup_path       "/var/backups/chef"
+              pid_file               "/var/run/chef/client.pid"
+              Chef::Log::Formatter.show_time = true      
+            chef_firstboot_json: '{"run_list":["role[booted]"]}'
+            install_url: https://install.zeusconsulting.com/zeusconsulting-admin-tele
+            apiuser: Chef
+
+        # used by cloudmaker
+        dnsmasq:
+          enable_dhcp: true
+          enable_dns: false
+          dhcp_options:
+            - 'dhcp-option=option:router,10.21.0.5'
+            - 'dhcp-option=6,8.8.8.8,4.2.2.2'
+            - 'enable-tftp'
+            - 'tftp-no-blocksize'
+          dhcp:
+            dhcp-range: 'eth1,10.21.0.100,10.21.0.200,12h'
+            interface: eth1
+            dhcp-boot: pxelinux.0
+            tftp-root: /var/lib/tftpboot
+          # we cant seem to stop dnsmasq from overwriting cloudbuilders resolv.conf
+          # so if its going to overwrite it, we put in something useful
+          dns:
+            server: 8.8.8.8
+
+        monitoring:
+          db_role: os-ops-database
+          ipmi:
+            user: *power_credentials_username
+            exclusion_ids: '1746,1880'
+          extra_monitor_interfaces: 
+            - eth0
+            - eth1
+            - eth2
+            - bond0.10
+            - bond0.25
+
+        # (TODO): password not in secret file for
+        # admin user or ceilometer - also with
+        # a replication set, it seems the user
+        # management recipe fails
+        mongodb:
+          config:
+            auth: false
+            replSet: rs_default
+            logpath: /var/log/mongo/mongodb.log
+            dbpath: /var/lib/mongodb
+          cluster_name: ceilometer
+          default_init_name: mongodb
+          instance_name: mongodb
+          dbconfig_file: /etc/mongodb.conf
+          create_databases: ['ceilometer']
+          # this does not take effect as we do
+          # not use the user management recipe
+          # since it fails with a replSet
+          admin: 
+            username: admin
+            password: xef239dced
+            roles: ["root", "userAdminAnyDatabase", "dbAdminAnyDatabase"]
+            database: admin
+          users:
+            - username: ceilometer
+              password:  xef239d333
+              roles: ["dbOwner"]
+              database: ceilometer
+
+        swift:
+          service_pass: notUsedButRequired
+
+        openvpn:
+          gateway: "vpn.compute.us-co01.cloud.tele.com"
+          subnet: 10.5.0.0
+          netmask: 255.255.255.0
+          routes:
+            - push 'route 10.0.0.0 255.128.0.0'
+          key:
+            country: US
+            province: CA
+            city: San Sancisco
+            org: zeusconsulting
+            email: support@zeusconsulting.com
+
+        bind:
+          zonesource: null
+          acl-role: external-acl
+          ipv6_listen: true
+          zonetype: master
+          options:
+            - "recursion no;"
+            - "allow-query { any; };"
+            - "listen-on-v6 { any; };"
+          zones:
+            attribute: *id005
+          dns_infra_servers: *id002
+          dns_tenant_servers: *id003
+          domain_name_templates: *id004
+          records: *dns_records
+          reverse_records: *dns_reverse_records
+
+        openstack:
+
+          # do not change this 
+          release: liberty
+
+          region: us-co01
+
+          api:
+            auth:
+              version: 'v2.0'
+
+          orchestration: 
+            clients:
+              insecure: true
+            api:
+              auth: 
+                insecure: true
+
+          mysql:
+            max_connections: 10000
+            innodb_log_file_size: 5242880
+            innodb_log_buffer_size: 4G
+            innodb_buffer_pool_size: 1G
+            skip-name-resolve: true
+            query_cache_size: 2G
+            character-set-server: 'utf8'
+
+          auth:
+            strategy: uuid
+
+          object-storage:
+            dispersion:
+              auth_user: dispersion
+              auth_key: 8fde9ceed112
+            swift_hash: 8594698ff85a
+            disk_enum_expr: >-
+              Hash[('c'..'z').to_a.collect{|x| [ "vd#{x}", {} ]} + ('aa'..'az').to_a.collect{|x| [ "vd#{x}", {} ]}]
+            network:
+              proxy-cidr: 10.24.0.0/16
+              object-cidr: 10.24.0.0/16
+
+          compute:
+            config:
+              notification_topics: ['notifications', 'notifications_designate']
+              notification_drivers: ['messaging', 'log']
+              notify_on_state_change: vm_and_task_state
+            ec2_workers: 24
+            metadata_workers: 24
+            osapi_compute_workers: 24
+            libvirt:
+              max_workers: 10
+            conductor:
+              workers: 8
+            api:
+              auth:
+                insecure: True
+            network:
+              service_type: neutron
+              neutron:
+                insecure: True
+              floating:
+                ipv4_cidr: 64.124.7.10/24
+                public_network_name: public
+            image:
+              glance_insecure: True
+            block-storage:
+              cinder_insecure: True
+
+          block-storage:
+            notification_driver: 'messagingv2'
+            misc_cinder: ['nova_api_insecure=true']
+            volume:
+              driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+              # 'file' for basic 600g file for testing
+              # for real storag, we would use type
+              # 'block_devices' for block devices
+              # and then specify 'block_devices' as '/dev/sd[k-m]1'
+              # we could use as part of our LVM group
+              create_volume_group: true
+              create_volume_group_type: file
+              volume_group_size: 600
+            api:
+              auth:
+                # this is required to support 
+                # cinder quotas
+                version: 'v3.0'
+                insecure: True
+            image:
+              glance_api_insecure: True
+
+          network:
+            lbaas:
+              enabled: 'True'
+              periodic_interval: 30
+              device_driver: 'neutron_lbaas.services.loadbalancer.drivers.haproxy.namespace_driver.HaproxyNSDriver'
+            service_plugins: ["router", "lbaas"]
+            dhcp_lease_duration: 86400
+            dhcp:
+              # Override the default mtu setting given to virtual machines
+              # to 1454 to allow for tunnel and other encapsulation overhead.  You
+              # can adjust this from 1454 to 1500 if you do not want any lowering
+              # of the default guest MTU which is appropriate in a network
+              # that has > 1500 mtu on the tunnel network (VLAN 25) which we do
+              dhcp-option: '26,1500'
+              dhcp_agents_per_network: 2
+            rpc_workers: 24
+            api_workers: 24
+            use_namespaces: True
+            allow_overlapping_ips: True
+            nova:
+              insecure: True
+            wsgi:
+              api_workers: 23
+            openvswitch:
+              bridge_mappings: 'local:br-local'
+              bridge_mapping_interface: 'br-local:bond0'
+              enable_tunneling: True
+              local_ip_interface: bond0.25
+              tunnel_type: gre
+              tunnel_types: gre
+              tunnel_id_ranges: 1:32000
+              tenant_network_type: gre
+              network_vlan_ranges: local:500:2000
+            l3:
+              ha:
+                l3_ha: True
+                max_l3_agents_per_router: 2            
+              external_network_bridge_interface: bond0.14
+            ml2:
+              mechanism_drivers: openvswitch
+              type_drivers: vlan,gre
+              tenant_network_type: gre
+              tenant_network_types: gre,vlan
+              network_vlan_ranges: local:500:1000
+              tunnel_id_ranges: 1:32000
+            api: 
+              auth:
+                insecure: True
+
+          telemetry:
+            dbsync_timeout: 30
+            api:
+              auth:
+                insecure: True
+            service-credentials:
+              insecure: True
+
+          image:
+            # unfortunately, we must upload images manually
+            # since they are custom nephos images
+            upload_images: ['Ubuntu Lucid', 'Ubuntu Precise', 'CentOS 7', 'Windows Server 2012 R2 Standard'] #[precise, lucid, centos]
+            service_tenant_name: service
+            service_user: glance
+            ssl: # disable glance utilizing certificates
+              cert_file: ''
+              key_file: ''
+            registry:
+              auth:
+                insecure: True
+            upload_image:
+              Ubuntu Lucid: http://cloud-images.ubuntu.com/lucid/current/lucid-server-cloudimg-amd64-disk1.img
+              Ubuntu Precise: http://cloud-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img
+              CentOS 7: http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+              Windows Server 2012 R2 Standard: https://s3-us-west-1.amazonaws.com/nephohopper/w2012r2.qcow2
+            # The following disk format types are supported: qcow vhd vmdk vdi iso raw
+            upload_image_min_disk:
+              Ubuntu Precise: 20
+              Ubuntu Lucid: 20
+              CentOS 7: 20
+              Windows Server 2012 R2 Standard: 15
+            upload_image_type: 
+              Ubuntu Precise: qcow
+              Ubuntu Lucid: qcow
+              CentOS 7: qcow
+              Windows Server 2012 R2 Standard: qcow
+            api:
+              stores: ['file','http','swift']
+              swift:
+                insecure: True
+              auth:
+                insecure: True
+              default_store: swift
+              container: glance
+              large_object_size: 200
+              large_object_chunk_size: 200
+              enable_snet: 'False'
+              image_cache_max_size: 10737418240
+
+          identity:
+            token:
+              expiration: 86400          
+            saml:
+              idp_sso_endpoint: None
+              idp_lang: None
+              idp_organization_name: None
+              idp_organization_display_name: None
+              idp_organization_url: None
+              idp_contact_email: None
+              idp_contact_telephone: None
+              idp_contact_type: other
+              idp_contact_name: None
+              idp_contact_company: None
+              idp_contact_surname: None
+              idp_metadata_path: /etc/keystone/saml2_idp_metadata.xml
+
+          dns:
+            servers: *id003
+            user: designate
+            group: designate
+            zone_manager:
+              workers: 10
+            agent:
+              workers: None
+            mdns:
+              workers: 10
+            sink:
+              enabled_notification_handlers: 'nova_fixed, neutron_floatingip'
+
+          dashboard:
+            billing:
+              role: billing
+              billing_project_name: billing
+            # used for encrypting credit data
+            cipher_key: '749dd86f607fa53a5890bb8a0f790474'          
+            session_backend: memcached
+            # alternative is 3
+            identity_api_version: 2.0
+            keystone_multidomain_support: False
+            custom_theme_path: 'themes/tele'
+            branding:
+              title: tele
+              link: http://www.tele.com
+            use_ssl: false
+            ssl_offload: true
+            ssl_no_verify: 'True'
+            chef:
+              chef_url: *chef_url
+              chef_key: *chef_validation_key
+              chef_admin_client_key: *chef_admin_client_key
+              chef_key_path: /usr/share/openstack-dashboard/chef-validation.key
+              chef_admin_client_key_path: /usr/share/openstack-dashboard/chef-admin.key
+              chef_user: admin
+            maas:
+              maas_key: *maas_api_key
+              maas_url: *maas_api_url
+
+          endpoints:
+            bind-host: 0.0.0.0
+            host: *lb_vip_public_os_api_name
+            scheme: 'https'
+            identity-api:
+              path: /v2.0
+            identity-internal:
+              path: /v2.0
+            identity-admin:
+              path: /v2.0
+            object-storage-api:
+              port: 8443
+            compute-novnc:
+              scheme: 'http'
+            compute-xvpvnc:
+              scheme: 'http'
+            db:
+              bind_interface: eth1
+              host: *lb_vip_private
+            mq:
+              host: *lb_vip_private
+              bind_interface: eth1
+
+          db:
+            host: *lb_vip_private
+            identity:
+              migrate: true # allows db_sync to run
+            # we hijack the telemetry service as this uses
+            # an unauthenticated mongo cluster we setup
+            telemetry:
+              host: *lb_vip_private
+              port: 27017
+            # this allows us to create the cloudkitty database
+            # which is not included in openstack-common              
+            rating:
+              host: *lb_vip_private
+              port: 3306
+              username: cloudkitty
+              db_name: cloudkitty
+              service_type: mysql
+              options:
+                mysql: "?charset=utf8"              
+            # this allows us to create the designate database
+            # which is not included in openstack-common
+            dns:
+              host: *lb_vip_private
+              port: 3306
+              username: designate
+              db_name: designate
+              service_type: mysql
+              options:
+                mysql: "?charset=utf8"
+            dns-pool:
+              host: *lb_vip_private
+              port: 3306
+              username: designate-pool
+              db_name: designate-pool
+              service_type: mysql
+              options:
+                mysql: "?charset=utf8"
+            zeusconsulting:
+              host: *lb_vip_private
+              port: 3306
+              username: zeusconsulting
+              db_name: zeusconsulting
+              service_type: mysql
+              options:
+                mysql: "?charset=utf8"
+            zeusconsulting_statistics:
+              host: *lb_vip_private
+              port: 3306
+              username: zeusconsulting
+              db_name: zeusconsulting_statistics
+              service_type: mysql
+              options:
+                mysql: "?charset=utf8"
+
+          mq:          
+            block-storage:
+              rabbit:
+                notification_topic: 'notifications,trackinstance'          
+            network:
+              notification_topics: 'notifications, notifications_designate'
+            user: openstackmq
+            vhost: /openstack
+            bind_interface: eth1
+            host: *lb_vip_private
+
+        haproxy:
+
+          certdata:
+            wildcard.compute.us-co01.cloud.tele.com.pem: *certificate_wildcard
+
+          vip_public_interface: eth1
+          vip_private_interface: eth2
+          vip_public_cidr: *lb_vip_public_cidr
+          vip_private_cidr: *lb_vip_private_cidr
+          public_vip_list:
+            - *lb_vip_public_os_api
+            - *lb_vip_public_os_monitoring
+            - *lb_vip_public_ns_api
+            - *lb_vip_public_ns_gui
+            - *lb_vip_public_ns_signup
+            - *lb_vip_public_ns_docs
+          private_vip_list:
+            - *lb_vip_private
+          private_vip: *lb_vip_private
+          mysql-check-user: mysqlcheck_e50d
+          stats:
+            port: 9999
+            uri: /
+            auth: stats:ath3naw1zd0m
+
+          # TODO: discover these based on os-haproxy* roles
+          # and use a failover IP - and need a separate
+          # ip for object storage
+          vips:
+            ns_lock_admin: !!python/object/apply:string.join [[*lb_vip_private, '9001'], ':']
+            ns_lock_service: !!python/object/apply:string.join [[*lb_vip_private, '4001'], ':']
+            ns_console_tcp: !!python/object/apply:string.join [[*lb_vip_public_ns_api, '9000'], ':']
+            ns_console_ssh: !!python/object/apply:string.join [[*lb_vip_public_ns_api, '2222'], ':']
+            ns_api_insecure: !!python/object/apply:string.join [[*lb_vip_public_ns_api, '80'], ':']
+            ns_api_ssl: !!python/object/apply:string.join [[*lb_vip_public_ns_api, '443'], ':']
+            ns_portal_insecure: !!python/object/apply:string.join [[*lb_vip_public_ns_gui, '80'], ':']
+            ns_portal_websocket: !!python/object/apply:string.join [[*lb_vip_public_ns_gui, '6080'], ':']
+            ns_portal_ssl: !!python/object/apply:string.join [[*lb_vip_public_ns_gui, '443'], ':']
+            ns_signup_insecure: !!python/object/apply:string.join [[*lb_vip_public_ns_signup, '80'], ':']
+            ns_signup_ssl: !!python/object/apply:string.join [[*lb_vip_public_ns_signup, '443'], ':']
+            ns_docs: !!python/object/apply:string.join [[*lb_vip_public_ns_docs, '80'], ':']
+            os_ops_monitoring: !!python/object/apply:string.join [[*lb_vip_public_os_monitoring, '80'], ':']
+            os_ops_monitoring_ssl: !!python/object/apply:string.join [[*lb_vip_public_os_monitoring, '443'], ':']
+            os_ops_database: !!python/object/apply:string.join [[*lb_vip_private, '3306'], ':']
+            os_ops_mailserver: !!python/object/apply:string.join [[*lb_vip_private, '25'], ':']            
+            os_ops_mongodb: !!python/object/apply:string.join [[*lb_vip_private, '27017'], ':']
+            os_ops_messaging: !!python/object/apply:string.join [[*lb_vip_private, '5672'], ':']
+            os_object_storage_public: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8080'], ':']
+            os_object_storage_private: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8443'], ':']
+            os_identity_admin: !!python/object/apply:string.join [[*lb_vip_public_os_api, '35357'], ':']
+            os_identity_public: !!python/object/apply:string.join [[*lb_vip_public_os_api, '5000'], ':']
+            os_image_registry: !!python/object/apply:string.join [[*lb_vip_public_os_api, '9191'], ':']
+            os_block_storage_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8776'], ':']
+            os_image_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '9292'], ':']
+            os_network_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '9696'], ':']
+            os_dashboard_ssl: !!python/object/apply:string.join [[*lb_vip_public_os_api, '443'], ':']
+            os_dashboard: !!python/object/apply:string.join [[*lb_vip_public_os_api, '80'], ':']
+            os_compute_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8774'], ':']
+            os_compute_metadata: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8775'], ':']
+            os_compute_ec2: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8773'], ':']
+            os_compute_xvpvnc: !!python/object/apply:string.join [[*lb_vip_public_os_api, '6081'], ':']
+            os_compute_novnc: !!python/object/apply:string.join [[*lb_vip_public_os_api, '6080'], ':']
+            os_telemetry_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8777'], ':']
+            os_dns_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '9001'], ':']
+            os_rating_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8888'], ':']
+            os_orchestration_api: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8004'], ':']
+            os_orchestration_api_cfn: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8000'], ':']
+            os_orchestration_api_cloudwatch: !!python/object/apply:string.join [[*lb_vip_public_os_api, '8003'], ':']
+
+          certs:
+            ns_api_ssl: wildcard.compute.us-co01.cloud.tele.com.pem
+            ns_portal_ssl: wildcard.compute.us-co01.cloud.tele.com.pem
+            ns_signup_ssl: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_ops_monitoring_ssl: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_object_storage_private: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_identity_admin: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_identity_public: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_block_storage_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_image_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_image_registry: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_network_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_dashboard_ssl: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_compute_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_compute_metadata: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_compute_ec2: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_telemetry_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_dns_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_rating_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_orchestration_api: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_orchestration_api_cfn: wildcard.compute.us-co01.cloud.tele.com.pem
+            os_orchestration_api_cloudwatch: wildcard.compute.us-co01.cloud.tele.com.pem
+
+        dns:
+          public_forward_domain: &public_forward_domain compute.us-co01.cloud.tele.com
+
+        internal_node: 
+            uvt_root_password: ubuntu
+            uvt_ssh_public_key: |-
+              ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAupcvPIO0FlZee1Hg8bh6mIK2cSIsd+yzrILdku35AZRDprw1gBsr6cZwMwcAcfJ8K9b09yVrNtlM98HUdxaegxJZxBuL6+aS8FVhuu7PHw5wcusPAXqXgPrkbLBoLy3yC96kT5BlwxPtsDoCQJINTT2lZEYjeFBpkdBPewrSPry9WJwEeOd70k6cFOQ4+n/pxN87vm8M4Nkgt4RwDdcQRo73emsen7IDxOe4QHd3P6Qd6VdO37jxwqfEjB+bgn/IICdOs0be99ZGGzozw5iuluT2Whwrkt2cSu0C3fM5Z45NTfAd6tF+4TkjUiz/ZZCaP4VJw60Mg/fyXTxVNEhwYw== alan@alan-laptop
+        cumulus:        
+
+          quagga:
+            # this controls whether we template them
+            # or manage the config files by hand - a
+            # yes will have chef generate and overwrite
+            # bgpd.conf, zebra.conf, etc.
+            daemons:
+              zebra: 'no'
+              bgpd: 'no'
+              ospfd: no
+              ospf6d: no
+              ripd: no
+              ripngd: no
+            # this controls whether we enable them
+            # i.e. we start them
+            enabled:
+              zebra: 'yes'
+              bgpd: 'yes'
+
+          bridge-vids: 1-3299,4093
+          peerlink:
+            interfaces: [swp32]
+            mac: 44:38:39:ff:00:01          
+            mtu: 9126
+
+          # bonds that do not span both switches
+          bonds: {}
+
+          # bonds that span both switches
+          clag_bonds:
+            border1:
+                trunk: true
+                interfaces: [swp25s0, swp26s0]
+                bridge-pvid: 4093
+                bridge-vids: 2,3,4093
+                clag_id: 2000
+                mtu: 9126                
+            dlr1:
+                bridge-pvid: 20
+                trunk: true
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp1s1]
+                clag_id: 1000
+                mtu: 9126                
+            dlr2:
+                bridge-pvid: 20
+                trunk: true
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp1s2]
+                clag_id: 1001
+                mtu: 9126               
+            cloudbuilder1:
+                bridge-pvid: 1
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp1s0]
+                clag_id: 1002
+                mtu: 9126                
+            cloudbuilder2:
+                bridge-pvid: 1
+                trunk: true            
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp1s3]
+                clag_id: 1003
+                mtu: 9126                
+            node1:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp2s0]
+                clag_id: 1
+                mtu: 9126                
+            node2:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp2s1]
+                clag_id: 2                  
+                mtu: 9126
+            node3:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp2s2]
+                clag_id: 3
+                mtu: 9126                
+            node4:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp2s3]
+                clag_id: 4
+                mtu: 9126                
+            node5:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp3s0]
+                clag_id: 5
+                mtu: 9126
+            node6:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp3s1]
+                clag_id: 6
+                mtu: 9126
+            node7:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp3s2]
+                clag_id: 7
+                mtu: 9126
+            node8:
+                bridge-pvid: 20
+                trunk: true
+                bond-lacp-bypass-allow: 1
+                bond-lacp-bypass-all-active: 1
+                mstpctl-portadminedge: "yes"
+                mstpctl-bpduguard: "yes"
+                interfaces: [swp3s3]
+                clag_id: 8
+                mtu: 9126
+
+          port:
+            1: 4x10G
+            2: 4x10G
+            3: 4x10G
+            4: 4x10G
+            5: 4x10G
+            6: 4x10G
+            7: 4x10G
+            8: 4x10G
+            9: 4x10G
+            10: 4x10G
+            11: 4x10G
+            12: 4x10G
+            13: 4x10G
+            14: disabled
+            15: disabled
+            16: disabled
+            17: 4x10G
+            18: 4x10G
+            19: 4x10G
+            20: 4x10G
+            21: 4x10G
+            22: 4x10G
+            23: 4x10G
+            24: 4x10G
+            25: 4x10G
+            26: 4x10G
+            27: 4x10G
+            28: 4x10G
+            29: 40G
+            30: 40G
+            31: 40G
+            32: 40G         
+
+
+        chef:
+
+          # cloned from the settings above, used to build chef fqdn client names
+          # e.g. server.int.us-co01.zeusconsulting.com
+          domain_name_templates: *id004
+
+          # the chef server ip
+          ip: *chef_ip
+
+          url: *chef_url
+
+          # the chef validation key needs to be extracted from the chef server
+          validation_key: *chef_validation_key 
+
+        # the network settings for this environments, namely the
+        # vlan ids - a nil value means the network is untagged
+        # these values are overrides for the cookbook-networking
+        # cookbook
+        networking:
+          bond_mtu: 9126
+          vlans:
+            maas: nil
+            ops: 22
+            vops: 23
+            storage: 24
+            overlay: 25
+            pub: 10
+          interface:
+            maas: eth0
+
+        # the raid CfgSpanAdd command passed to megacli on internal nodes
+        # to build the lvm volume
+        raid:
+          span_command: "-CfgAllFreeDrv -r10 -SpanCount 3 WT NORA -strpsz64 -a0"
+
+    - name: chef-server
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Chef Server Role"
+      run_list: []
+      default_attributes: {}
+
+    - name: physical-host
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Used by Nagios - Real Physical Host"
+      run_list: []
+      default_attributes:
+        nagios:
+          server:
+            monitored_client_interface: bond0.22
+
+    - name: virtual-host
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Used by Nagios - Virtual Host"
+      run_list: []
+      default_attributes:
+        nagios:          
+          server:
+            monitored_client_interface: eth1
+
+    - name: os-ops-mailclient
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Mail Client Role (uses relay host)"
+      default_attributes:
+        postfix:
+          mail_type: client
+          main:
+            mydomain: *public_forward_domain
+            myorigin: *public_forward_domain
+            smtp_use_tls: "no"
+      run_list: 
+        - recipe[postfix]
+
+    - name: os-ops-mailserver
+      chef_type: "role"
+      json_class: "Chef::Role"
+      description: "Mail Server Role"
+      override_attributes:
+        main:
+          relayhost: nil
+      default_attributes:
+        postfix:
+          mail_type: master
+          main:
+            mynetworks: *cidr_whitelist
+            inet_interfaces: "all"
+            mydomain: *public_forward_domain
+            myorigin: *public_forward_domain
+      run_list:
+        - recipe[postfix::server]
+
+    - name: base
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Base role for all systems"
+      run_list:
+        - recipe[hopper-repo::defaults]
+        - recipe[ohai]
+        - recipe[apt]
+        - recipe[sudo]
+        - recipe[chef-client::cron]
+        - recipe[hopper-repo::base]
+        - recipe[users::sysadmins]
+        - recipe[ntp::default]
+        - recipe[monitoring::client]
+        - role[os-ops-mailclient]
+
+    - name: booted
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "All nodes initially use this role when they are initially provisioned"
+      override_attributes:
+        omnibus_updater:
+          kill_chef_on_upgrade: false
+          version: 11.18.12
+      run_list:
+        - recipe[hopper-repo::defaults]
+        - recipe[apt]
+        - recipe[ohai]
+        - recipe[bash]
+        - recipe[chef-client::cron]
+        - recipe[hopper-repo::base]
+        - recipe[sudo]
+        - recipe[users::sysadmins]
+        - recipe[reboot-handler]
+        - recipe[networking]
+        - recipe[omnibus_updater]
+        - recipe[raid]
+
+    - name: internal-node
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Internal Node Role"
+      run_list:
+        - role[base]
+        - role[physical-host]
+        - recipe[hopper-repo::internal-node]
+
+    - name: cloudbuilder-primary
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Primary Cloudbuilder"
+      run_list:
+        - role[base]
+        - role[physical-host]
+        - recipe[hopper-repo::cloudbuilder]
+
+
+    - name: cloudbuilder-secondary
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Secondary Cloudbuilder"
+      run_list:
+        - role[base]
+        - role[physical-host]
+        - recipe[hopper-repo::cloudbuilder]
+
+    - name: infra-dns
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Infra DNS Server"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::infra-dns]
+
+    - name: infra-caching
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Infra Caching Server (memcached)"
+      run_list: []
+
+    - name: infra-vpn
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Infra VPN Server"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::infra-vpn]
+
+    - name: os-ops-database-primary
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Database Primary Role"
+      run_list: []
+      override_attributes:
+        mysql:
+          auto-increment-offset: 2
+          auto-increment-increment: 1
+          server_id: 1
+
+    - name: os-ops-database-secondary
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Database Secondary Role"
+      run_list: []
+      override_attributes:
+        mysql:
+          auto-increment-offset: 2
+          auto-increment-increment: 2
+          server_id: 2
+
+    - name: os-ops-mongodb
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Database MongoDB"
+      run_list: []
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[mongodb::replicaset]
+        - recipe[hopper-repo::os-ops-mongodb]
+
+    - name: os-ops-database
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Database Server"
+      override_attributes:      
+        mysql:
+          server_repl_password: b597efe3a9aa
+          relay_log: /var/lib/mysql/mysql-db-relay
+          log_bin: /var/lib/mysql/log-bin.log
+          log_slave_updates: "true"          
+          replicate_do_db: [keystone,glance,nova,neutron,zeusconsulting,zeusconsulting_statistics]
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-ops-database::server]
+        - recipe[hopper-repo::os-db-repl]
+        - recipe[hopper-repo::os-db-create]
+
+    - name: os-ops-loadbalancer
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "RabbitMQServer"
+      override_attributes:
+        apache:
+          listen_addresses: [127.0.0.1]
+          listen_ports: [8081]
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::loadbalancer]
+
+    - name: os-ops-messaging
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "RabbitMQServer"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-ops-messaging::server]
+        - recipe[hopper-repo::os-ops-mq-setup]
+
+    - name: os-ops-monitoring
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Monitoring Server"
+      override_attributes:
+        apache:
+          mpm: prefork
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::infra-monitoring]
+        - recipe[monitoring::client]
+        - recipe[postfix]
+
+    - name: os-ops-monitoring-standby
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Monitoring Server (Standby)"
+      run_list: []
+
+    - name: cumulus-tor-switch
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Cumulus TOR Switch Role"
+      run_list:
+        - recipe[hopper-repo::defaults]
+        - recipe[hopper-repo::cumulus]
+        - recipe[ohai]
+        - recipe[apt]
+        - recipe[sudo]
+        - recipe[chef-client::cron]
+        - recipe[users::sysadmins]
+        - recipe[ntp::default]
+        - recipe[cumulus::default]
+
+    - name: os-base
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Base Role"
+      run_list:
+        - recipe[openstack-common]
+        - recipe[openstack-common::logging]
+        - recipe[openstack-common::sysctl]
+        - recipe[openstack-common::client]
+        - role[os-client]
+
+    - name: os-client
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Client"
+      run_list:
+        - recipe[hopper-repo::os-client]
+        - recipe[openstack-common::client]
+        - recipe[openstack-block-storage::client]
+        - recipe[openstack-compute::client]
+        - recipe[openstack-identity::client]
+        - recipe[openstack-image::client]
+        - recipe[openstack-network::client]
+        - recipe[openstack-object-storage::client]
+        - recipe[openstack-orchestration::client]
+        - recipe[openstack-telemetry::client]
+
+    - name: os-register
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Identity"
+      run_list:
+        - recipe[openstack-identity::registration]
+        - recipe[openstack-image::identity_registration]
+        - recipe[openstack-network::identity_registration]
+        - recipe[openstack-compute::identity_registration]
+        - recipe[openstack-bare-metal::identity_registration]
+        - recipe[openstack-telemetry::identity_registration]
+        - recipe[openstack-orchestration::identity_registration]
+        - recipe[hopper-repo::os-block-storage-registration]
+        - recipe[hopper-repo::os-designate-registration]
+        - recipe[hopper-repo::os-cloudkitty-registration]
+        - recipe[hopper-repo::os-compute-setup]
+        - recipe[hopper-repo::os-image-upload]
+
+
+    - name: os-identity
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Identity"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-identity::server]
+
+    - name: os-image
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Image"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-image-api]
+        - recipe[openstack-image::registry]
+
+    - name: os-orchestration
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Orchestration APIs and Engine"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-orchestration-api]
+
+    - name: os-compute-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Compute API"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-compute-api]
+
+    - name: os-dns-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack DNS API"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-designate-api]
+
+    - name: os-rating-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Cloudkitty API"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-cloudkitty-api]
+
+    - name: os-dns-public
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack DNS Public DNS Server"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-designate-public]
+
+    - name: os-telemetry-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry API"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::api]
+
+    - name: os-telemetry-collector
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Collector"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-telemetry-collector]
+
+    - name: os-telemetry-alarm-notifier
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Alarm Notifier"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::alarm-notifier]
+
+    - name: os-telemetry-alarm-evaluator
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Alarm Evaluator"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::alarm-evaluator]
+
+    - name: os-telemetry-agent-notification
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Agent Notification"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::agent-notification]
+
+    - name: os-telemetry-agent-compute
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Agent Compute"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::agent-compute]
+
+    - name: os-telemetry-agent-central
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Agent Central"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-telemetry::agent-central]
+
+    - name: os-telemetry-controller
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Telemetry Controller"
+      run_list:
+        - role[os-telemetry-agent-central]
+        - role[os-telemetry-agent-notification]
+        - role[os-telemetry-alarm-evaluator]
+        - role[os-telemetry-alarm-notifier]
+        - role[os-telemetry-collector]
+        - role[os-telemetry-api]
+
+    - name: os-block-storage-volume
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Block Storage volume service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-block-storage::volume]
+
+    - name: os-block-storage-backup
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Block Storage Backup service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-block-storage::backup]
+
+    - name: os-block-storage-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Block Storage API service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-block-storage-api]
+
+    - name: os-block-storage-scheduler
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Block Storage Scheduler service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-block-storage::scheduler]
+
+    - name: os-network-server
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Image"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-network::server]
+
+    - name: os-controller
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Global Controller Role"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - role[infra-caching]
+        - recipe[openstack-common::set_endpoints_by_interface]
+        - role[os-identity]
+        - role[os-image]
+        - role[os-network-server]
+        - role[os-compute-api]
+        - role[os-telemetry-controller]
+        - role[os-dns-api]
+        - role[os-rating-api]
+        - role[os-orchestration]
+        - role[os-block-storage-api]
+        - role[os-block-storage-scheduler]
+        - role[os-block-storage-backup]
+        - recipe[openstack-common::openrc]
+
+    - name: os-dashboard
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Dashboard"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-dashboard-server]
+
+    - name: os-network-router
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Network Router"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-network-router]
+
+    - name: os-compute-worker
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Compute Node"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[hopper-repo::os-compute-worker]
+        - role[os-telemetry-agent-compute]
+        - role[os-block-storage-volume]
+
+    - name: os-object-storage-account
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Account Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::account-server]
+
+    - name: os-object-storage-container
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Container Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::container-server]
+
+    - name: os-object-storage-object
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Object Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::object-server]
+
+    - name: os-object-storage-management
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Management Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::management-server]
+
+    - name: os-object-storage-setup
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Setup Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::setup]
+
+    - name: os-object-storage-proxy
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "OpenStack Object Storage Proxy Service"
+      run_list:
+        - role[base]
+        - role[os-base]
+        - recipe[openstack-object-storage::proxy-server]
+
+    - name: os-object-storage-node
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Run All OpenStack Object Storage Object Services"
+      run_list:
+        - role[os-object-storage-container]
+        - role[os-object-storage-account]
+        - role[os-object-storage-object]
+        - role[os-object-storage-proxy]
+
+    - name: os-object-storage-admin
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "Run OpenStack Object Storage Object Management Services"
+      run_list:
+        - role[os-object-storage-setup]
+        - role[os-object-storage-management]
+
+    #----------------------------
+    # zeusconsulting 2.0 roles
+    #----------------------------
+
+    - name: ns-api
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting API"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-api]
+
+
+    - name: ns-api-primary
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting API Primary Node"
+      run_list:
+        - role[base]
+
+    - name: ns-worker
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Worker"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-worker]
+
+    - name: ns-lock
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Lock Servers"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-lock]
+
+    - name: ns-docs
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Documentation Server"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-docs]
+
+    - name: ns-console
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Console Servers"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-console]
+
+    - name: ns-cloudmaker
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Cloudmakers"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-cloudmaker]
+
+    - name: ns-compute
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Compute Host"
+      run_list:
+        - role[base]
+        - role[physical-host]
+        - recipe[hopper-repo::ns-compute]
+
+    - name: ns-dlr
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting DLR Host"
+      run_list:
+        - role[base]
+        - role[physical-host]
+        - recipe[hopper-repo::ns-dlr]
+
+    - name: ns-portal
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Portal"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-portal]
+
+    - name: ns-signup
+      chef_type: "role"
+      json_class: "Chef::Role"
+      default_attributes: {}
+      description: "zeusconsulting Portal"
+      run_list:
+        - role[base]
+        - recipe[hopper-repo::ns-signup]
+
+
+switches:
+- chef:
+    normal:
+      cumulus:
+        vlan:
+          4093:
+            address: 64.124.6.3/28
+            address-virtual: 00:00:5e:00:01:01 64.124.6.2/28
+            gateway: 64.124.6.1 
+          2:
+            description: Network Management Network
+            address: 10.2.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.2.0.1/24
+          3:
+            description: IPMI Network
+            address: 10.3.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.3.0.1/24
+          10:
+            description: CloudBuilder Public Network (NAT)
+            address: 64.124.6.34/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.33/27
+          11:
+            description: HAPROXY for Services
+            address: 64.124.6.66/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.65/27
+          12:
+            description: "HAPROX for Storage Services"
+            address: 64.124.6.98/27
+            address-virtual: 00:00:5e:00:01:01 64.124.97/27
+          13:
+            description: "DLR Public Network"
+            address: 64.124.6.130/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.129/27
+          14:
+            description: "Floating Network"
+            address: 64.124.7.2/24
+            address-virtual: 00:00:5e:00:01:01 64.124.7.1/24
+          20:
+            description: MaaS Provisioning Network
+            address: 10.20.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.20.0.1/24
+          21:
+            description: Cobbler Provisioning Network
+            address: 10.21.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.21.0.1/24
+          22: 
+            description: OPS Network (Physical)
+            address: 10.22.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.22.0.1/24
+          23: 
+            description: OPS Network (Virtual)
+            address: 10.23.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.23.0.1/24
+          24: 
+            description: Storage Network
+            address: 10.24.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.24.0.1/24            
+          25: 
+            description: Tunnel (Overlay) Network
+            address: 10.25.0.2/24
+            address-virtual: 00:00:5e:00:01:01 10.25.0.1/24
+            mtu: 9000
+        peerlink:
+          address: 64.124.6.17/30
+          peer_ip: 64.124.6.18       
+        common_routing:
+            hostname: r1-sw1
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[cumulus-tor-switch]
+  name: r1-sw1    
+- chef:
+    normal:
+      cumulus:
+        vlan:
+          4093:
+            address: 64.124.6.4/28
+            address-virtual: 00:00:5e:00:01:01 64.124.6.2/28
+            gateway: 64.124.6.1
+            mtu: 1500
+          2:
+            description: Network Management Network
+            address: 10.2.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.2.0.1/24
+            mtu: 1500            
+          3:
+            description: IPMI Network
+            address: 10.3.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.3.0.1/24
+            mtu: 1500            
+          10:
+            description: CloudBuilder Public Network (NAT)
+            address: 64.124.6.35/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.33/27
+            mtu: 1500            
+          11:
+            description: HAPROXY for Services
+            address: 64.124.6.67/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.65/27
+            mtu: 1500            
+          12:
+            description: "HAPROX for Storage Services"
+            address: 64.124.6.90/27
+            address-virtual: 00:00:5e:00:01:01 64.124.97/27
+            mtu: 1500            
+          13:
+            description: "DLR Public Network"
+            address: 64.124.6.131/27
+            address-virtual: 00:00:5e:00:01:01 64.124.6.129/27
+            mtu: 1500            
+          14:
+            description: "Floating Network"
+            address: 64.124.7.3/24
+            address-virtual: 00:00:5e:00:01:01 64.124.7.1/24
+            mtu: 1500            
+          20:
+            description: MaaS Provisioning Network
+            address: 10.20.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.20.0.1/24
+            mtu: 1500            
+          21:
+            description: Cobbler Provisioning Network
+            address: 10.21.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.21.0.1/24
+            mtu: 1500            
+          22: 
+            description: OPS Network (Physical)
+            address: 10.22.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.22.0.1/24
+            mtu: 1500            
+          23: 
+            description: OPS Network (Virtual)
+            address: 10.23.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.23.0.1/24
+            mtu: 1500            
+          24: 
+            description: Storage Network
+            address: 10.24.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.24.0.1/24            
+            mtu: 1500            
+          25: 
+            description: Tunnel (Overlay) Network
+            address: 10.25.0.3/24
+            address-virtual: 00:00:5e:00:01:01 10.25.0.1/24
+            mtu: 9126            
+        peerlink:
+          address: 64.124.6.18/30
+          peer_ip: 64.124.6.17
+        common_routing:
+            hostname: r1-sw2
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[cumulus-tor-switch]
+  name: r1-sw2
+
+# these hosts are slightly special, they are built on the
+# cloudbuilder host, and their fqdn in chef is their name
+# as they are instantiated before the full fqdn, and chef
+# is instantiated, so their chef nodename is "chef" and
+# "maasrc", not "maasrc.<internal domain>" like all other
+# hosts - mostly we use this simply to define chef roles
+# on these hosts and any overrides
+seed:
+
+  - name: chef
+    chef:
+      normal:
+        nagios:
+          ping_interface_override: eth1
+      run_list:
+      - role[us-co01]
+      - role[virtual-host]
+      - role[base]
+      - role[chef-server]
+
+  - name: maascc
+    chef:
+      normal:
+        nagios:
+          ping_interface_override: eth1
+      run_list:
+      - role[us-co01]
+      - role[virtual-host]
+      - role[base]
+
+  - name: maasrc
+    chef:
+      normal:
+        nagios:
+          ping_interface_override: eth1
+      run_list:
+      - role[us-co01]
+      - role[virtual-host]
+      - role[base]
+
+  - name: cloudbuilder1
+    chef:
+      normal:
+        nagios:
+          ping_interface_override: bond0.10
+      run_list:
+      - role[us-co01]
+      - role[physical-host]
+      - role[base]
+      - role[cloudbuilder-primary]
+      - role[os-ops-mailserver]
+
+  - name: cloudbuilder2
+    chef:
+      normal:
+        nagios:
+          ping_interface_override: bond0.10
+      run_list:
+      - role[us-co01]
+      - role[physical-host]
+      - role[base]
+      - role[cloudbuilder-secondary]
+      - role[os-ops-mailserver]
+
+# note that the boot_disk_tag is important
+# as it instructs maas which disk to target
+# for os installation - in the case of our
+# standard nodes, these can easily be identified
+# as they contain a maas assigned 'sata' tag
+
+nodes:
+
+###################################
+# cloudbuilders - o30b1r1, o30b4r1
+###################################
+
+# - chef:
+#     normal:
+#       networking:
+#         interfaces:
+#           eth0:
+#             address: 10.20.0.31
+#             gateway: 10.20.0.1
+#             netmask: 255.255.255.0
+#           bond0.22:
+#             force_gateway: true
+#             address: 10.22.0.31
+#             dns-nameservers: *id001
+#             dns-search: int.compute.us-co01.cloud.tele.com
+#             gateway: 10.22.0.5
+#             netmask: 255.255.255.0
+#           bond0.11:
+#             bridge: vlan-11
+#             type: manual
+#           bond0.23:
+#             bridge: vlan-23
+#             type: manual
+#           bond0.24:
+#             bridge: vlan-24
+#             type: manual
+#         udev:
+#           bus_order:
+#           - '0000:02:00.0'
+#           - '0000:06:00.0' 
+#           - '0000:06:00.1'
+#           - '0000:83:00.0'
+#           - '0000:83:00.1'
+#       raid:
+#         configured: true          
+#     override: {}
+#     run_list:
+#     - role[us-co01]
+#     - role[cloudbuilder-primary]
+#   name: o30b1r1
+#   netboot_ip: 10.20.0.31
+#   netboot_mac: 00:00:00:00:00:00
+#   node_type: CLOUDBUILDER
+#   ops_ip: 10.22.0.31
+#   overlay_ip: 10.23.0.31
+#   position_in_rack: 22
+#   power_ip: 10.3.0.25
+#   power_mac: 00:00:00:00:00:00
+#   rack_num: 1
+#   storage_ip: 10.25.0.31
+#   vendor: quanta
+#   vendor_model: Quanta T41S-2U
+#   boot_disk_tag: ssd
+
+# # N.B. this machine is missing
+# - chef:
+#     normal:
+#       networking:
+#         interfaces:
+#           eth0:
+#             address: 10.20.0.34
+#             gateway: 10.20.0.1
+#             netmask: 255.255.255.0
+#           bond0.22:
+#             force_gateway: true
+#             address: 10.22.0.34
+#             dns-nameservers: *id001
+#             dns-search: int.compute.us-co01.cloud.tele.com
+#             gateway: 10.22.0.5
+#             netmask: 255.255.255.0
+#           bond0.11:
+#             bridge: vlan-11
+#             type: manual
+#           bond0.23:
+#             bridge: vlan-23
+#             type: manual
+#           bond0.24:
+#             bridge: vlan-24
+#             type: manual
+#         udev:
+#           bus_order:
+#           - '0000:02:00.0'
+#           - '0000:06:00.0' 
+#           - '0000:06:00.1'
+#           - '0000:83:00.0'
+#           - '0000:83:00.1'
+#       raid:
+#         configured: true          
+#     override: {}
+#     run_list:
+#     - role[us-co01]
+#     - role[cloudbuilder-secondary]
+#   name: o30b4r1
+#   netboot_ip: 10.20.0.34
+#   netboot_mac: 00:00:00:00:00:00
+#   node_type: CLOUDBUILDER
+#   ops_ip: 10.22.0.34
+#   overlay_ip: 10.23.0.34
+#   position_in_rack: 30
+#   power_ip: 10.3.0.X
+#   power_mac: 00:00:00:00:00:00
+#   rack_num: 1
+#   storage_ip: 10.25.0.34
+#   vendor: quanta
+#   vendor_model: Quanta T41S-2U
+#   boot_disk_tag: ssd
+
+###################################
+# our two DLRs - o30b2r1, o30b3r1
+###################################
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.32
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0
+          bond0.13:
+            force_gateway: true
+            address: 64.124.6.132
+            netmask: 255.255.255.224
+            gateway: 64.124.6.129
+          bond0.14:
+            promisc: true
+          bond0.22:
+            address: 10.22.0.32
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            netmask: 255.255.255.0
+            routes: 
+              10.0.0.0/9: 
+                10.22.0.1
+          bond0.25:
+            address: 10.25.0.32
+            netmask: 255.255.255.0
+            mtu: 9000
+            routes:
+              10.25.0.0/16: 
+                10.25.0.1
+        udev:
+          bus_order:
+            bond0:
+              - '0000:01:00.0'
+              - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-network-router]
+  name: o30b2r1
+  netboot_ip: 10.20.0.32
+  netboot_mac: 00:00:00:00:00:00
+  node_type: DLR
+  ops_ip: 10.22.0.32
+  overlay_ip: 10.23.0.32
+  position_in_rack: 30
+  power_ip: 10.3.0.30
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.32
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: sata
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.33
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0
+          bond0.13:
+            force_gateway: true
+            address: 64.124.6.133
+            netmask: 255.255.255.224
+            gateway: 64.124.6.129
+          bond0.14:
+            promisc: true
+          bond0.22:
+            address: 10.22.0.33
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            netmask: 255.255.255.0
+            routes: 
+              10.0.0.0/9: 
+                10.22.0.1
+          bond0.25:
+            address: 10.25.0.33
+            netmask: 255.255.255.0
+            mtu: 9000
+            routes:
+              10.25.0.0/16: 
+                10.25.0.1
+        udev:
+          bus_order:
+            bond0:
+              - '0000:01:00.0'
+              - '0000:01:00.1' 
+      raid:
+        configured: true
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-network-router]
+  name: o30b3r1
+  netboot_ip: 10.20.0.33
+  netboot_mac: 00:00:00:00:00:00
+  node_type: DLR
+  ops_ip: 10.22.0.33
+  overlay_ip: 10.23.0.33
+  position_in_rack: 30
+  power_ip: 10.3.0.35
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.33
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: sata
+
+# four internal nodes
+- chef:
+    normal:
+      networking:
+        interfaces:
+          bond0.22:
+            force_gateway: true
+            address: 10.22.0.27
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.11:
+            bridge: vlan-11
+            type: manual
+          bond0.21:
+            bridge: vlan-21
+            type: manual            
+          bond0.23:
+            bridge: vlan-23
+            type: manual
+          bond0.24:
+            bridge: vlan-24
+            type: manual
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[internal-node]
+  name: o26b1r1
+  netboot_ip: 10.20.0.27
+  netboot_mac: 00:00:00:00:00:00
+  node_type: INTERNAL_NODE
+  ops_ip: 10.22.0.27
+  overlay_ip: 10.23.0.27
+  position_in_rack: 22
+  power_ip: 10.3.0.40
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.27
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          bond0.22:
+            force_gateway: true
+            address: 10.22.0.28
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.11:
+            bridge: vlan-11
+            type: manual
+          bond0.21:
+            bridge: vlan-21
+            type: manual            
+          bond0.23:
+            bridge: vlan-23
+            type: manual
+          bond0.24:
+            bridge: vlan-24
+            type: manual
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[internal-node]
+  name: o26b2r1
+  netboot_ip: 10.20.0.28
+  netboot_mac: 00:00:00:00:00:00
+  node_type: INTERNAL_NODE
+  ops_ip: 10.22.0.28
+  overlay_ip: 10.23.0.28
+  position_in_rack: 22
+  power_ip: 10.3.0.45
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.28
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          bond0.22:
+            force_gateway: true
+            address: 10.22.0.29
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.11:
+            bridge: vlan-11
+            type: manual
+          bond0.21:
+            bridge: vlan-21
+            type: manual            
+          bond0.23:
+            bridge: vlan-23
+            type: manual
+          bond0.24:
+            bridge: vlan-24
+            type: manual
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[internal-node]
+  name: o26b3r1
+  netboot_ip: 10.20.0.29
+  netboot_mac: 00:00:00:00:00:00
+  node_type: INTERNAL_NODE
+  ops_ip: 10.22.0.29
+  overlay_ip: 10.23.0.29
+  position_in_rack: 22
+  power_ip: 10.3.0.50
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.29
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          bond0.22:
+            force_gateway: true
+            address: 10.22.0.30
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.11:
+            bridge: vlan-11
+            type: manual
+          bond0.21:
+            bridge: vlan-21
+            type: manual
+          bond0.23:
+            bridge: vlan-23
+            type: manual
+          bond0.24:
+            bridge: vlan-24
+            type: manual
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[internal-node]
+  name: o26b4r1
+  netboot_ip: 10.20.0.30
+  netboot_mac: 00:00:00:00:00:00
+  node_type: INTERNAL_NODE
+  ops_ip: 10.22.0.30
+  overlay_ip: 10.23.0.30
+  position_in_rack: 22
+  power_ip: 10.3.0.55
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.30
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+############################################################
+# tenant compute hosts - o22b1r1, o22b2r1, o22b3r1, o22b4r1
+############################################################
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.23
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0        
+          bond0.22:
+            address: 10.22.0.23
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.25:
+            address: 10.25.0.23
+            netmask: 255.255.255.0
+            routes:
+              10.25.0.0/16:
+                10.25.0.1
+            mtu: 9000
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-compute-worker]
+  name: o22b1r1
+  netboot_ip: 10.20.0.23
+  netboot_mac: 00:00:00:00:00:00
+  node_type: COMPUTE_NODE
+  ops_ip: 10.22.0.23
+  overlay_ip: 10.23.0.23
+  position_in_rack: 22
+  power_ip: 10.3.0.60
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.23
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.24
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0        
+          bond0.22:
+            address: 10.22.0.24
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.25:
+            address: 10.25.0.24
+            netmask: 255.255.255.0
+            mtu: 9000
+            routes:
+              10.25.0.0/16:
+                10.25.0.1
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-compute-worker]
+  name: o22b2r1
+  netboot_ip: 10.20.0.24
+  netboot_mac: 00:00:00:00:00:00
+  node_type: COMPUTE_NODE
+  ops_ip: 10.22.0.24
+  overlay_ip: 10.23.0.24
+  position_in_rack: 22
+  power_ip: 10.3.0.65
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.24
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.25
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0        
+          bond0.22:
+            address: 10.22.0.25
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.25:
+            address: 10.25.0.25
+            netmask: 255.255.255.0
+            mtu: 9000
+            routes:
+              10.25.0.0/16:
+                10.25.0.1
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-compute-worker]
+  name: o22b3r1
+  netboot_ip: 10.20.0.25
+  netboot_mac: 00:00:00:00:00:00
+  node_type: COMPUTE_NODE
+  ops_ip: 10.22.0.25
+  overlay_ip: 10.23.0.25
+  position_in_rack: 22
+  power_ip: 10.3.0.70
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.25
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+- chef:
+    normal:
+      networking:
+        interfaces:
+          eth0:
+            address: 10.20.0.26
+            gateway: 10.20.0.1
+            netmask: 255.255.255.0        
+          bond0.22:
+            address: 10.22.0.26
+            dns-nameservers: *id001
+            dns-search: int.compute.us-co01.cloud.tele.com
+            gateway: 10.22.0.5
+            netmask: 255.255.255.0
+          bond0.25:
+            address: 10.25.0.26
+            netmask: 255.255.255.0
+            mtu: 9000
+            routes:
+              10.25.0.0/16:
+                10.25.0.1
+        udev:
+          bus_order:
+            bond0:
+                - '0000:01:00.0'
+                - '0000:01:00.1' 
+      raid:
+        configured: true          
+    override: {}
+    run_list:
+    - role[us-co01]
+    - role[os-compute-worker]
+  name: o22b4r1
+  netboot_ip: 10.20.0.26
+  netboot_mac: 00:00:00:00:00:00
+  node_type: COMPUTE_NODE
+  ops_ip: 10.22.0.26
+  overlay_ip: 10.23.0.26
+  position_in_rack: 22
+  power_ip: 10.3.0.75
+  power_mac: 00:00:00:00:00:00
+  rack_num: 1
+  storage_ip: 10.25.0.26
+  vendor: quanta
+  vendor_model: Quanta T41S-2U
+  boot_disk_tag: ssd
+
+# all virtual machines receive an eth0 connection
+# to the libvirt 'default' network, which issues
+# a dhcp address - functioning very similar
+# to our maas provisioning network.  The VM will
+# boot using this network first, install chef,
+# and configure static networking before rebooting
+# where the eth0 connection will remain largely
+# unused.  The dhcp_gateway option below controls
+# whether we continue to accept a default route
+# from dhcp or whether we refuse it and use our
+# static gateway instead
+
+virtual:
+  - name: os-controller1
+    cores: 12
+    memory: 65536
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.20
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-controller]
+      - role[virtual-host]
+
+  - name: os-controller2
+    cores: 12
+    memory: 65536
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.21
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-controller]
+      - role[os-register]
+      - role[virtual-host]
+
+  - name: os-db1
+    cores: 4
+    memory: 8096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.22
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-ops-database-primary]
+      - role[os-ops-database]
+      - role[virtual-host]
+
+  - name: os-db2
+    cores: 4
+    memory: 8096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.23
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-ops-database-secondary]
+      - role[os-ops-database]
+      - role[virtual-host]
+
+  - name: os-mq1
+    cores: 4
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.24
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-ops-messaging]
+      - role[virtual-host]
+
+  - name: os-mq2
+    cores: 4
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.25
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-ops-messaging]
+      - role[virtual-host]
+
+  - name: os-mongo1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.26
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-ops-mongodb]
+      - role[virtual-host]
+
+  - name: os-mongo2
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-ops-mongodb]
+      - role[virtual-host]
+
+  - name: os-dashboard1
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.28
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-dashboard]
+      - role[virtual-host]
+
+  - name: os-dashboard2
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true    
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.29
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.23.0.5
+              netmask: 255.255.255.0
+      run_list:
+      - role[us-co01]
+      - role[os-dashboard]
+      - role[virtual-host]
+
+  - name: infra-dns1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.74/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.30
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[infra-dns]
+      - role[virtual-host]
+
+  - name: infra-dns2
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.75/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.31
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[infra-dns]
+      - role[virtual-host]
+
+  - name: infra-dns3
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.76/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.32
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[infra-dns]
+      - role[virtual-host]
+
+  - name: os-dns1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.77/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.33
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-dns-public]
+      - role[virtual-host]
+
+  - name: os-dns2
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.78/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.34
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-dns-public]
+      - role[virtual-host]
+
+  - name: os-dns3
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.79/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.2224
+            eth2:
+              address: 10.23.0.35
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-dns-public]
+      - role[virtual-host]
+
+  - name: infra-vpn1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.80/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.36
+              netmask: 255.255.255.0
+              post-up: ['iptables -t nat -A POSTROUTING -s 10.5.0.0/24 -o eth2 -j MASQUERADE ; sysctl -w net.ipv4.ip_forward=1']
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[infra-vpn]
+      - role[virtual-host]
+
+  - name: os-haproxy1
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.81/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.37
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-ops-loadbalancer]
+      - role[virtual-host]
+
+  - name: os-haproxy2
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-11
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 64.124.6.82/27
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 64.124.6.65
+              netmask: 255.255.255.224
+            eth2:
+              address: 10.23.0.38
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.23.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-ops-loadbalancer]
+      - role[virtual-host]
+
+  - name: infra-monitoring1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.39
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[os-ops-monitoring]
+      - role[virtual-host]
+
+  - name: infra-monitoring2
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.40
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[os-ops-monitoring]
+      - role[os-ops-monitoring-standby]
+      - role[virtual-host]
+
+
+#-------------------------------------
+# begin zeusconsulting infrastructure
+# ------------------------------------
+
+  - name: ns-api1
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.41
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-api]
+      - role[ns-api-primary]
+      - role[virtual-host]
+
+  - name: ns-api2
+    cores: 2
+    memory: 4096
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.42
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-api]
+      - role[virtual-host]
+
+  - name: ns-signup1
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.43
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-signup]
+      - role[virtual-host]
+
+  - name: ns-signup2
+    cores: 1
+    memory: 2048
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.44
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-signup]
+      - role[virtual-host]
+
+  - name: ns-docs1
+    cores: 1
+    memory: 1024
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.45
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-docs]
+      - role[virtual-host]
+
+  - name: ns-docs2
+    cores: 1
+    memory: 1024
+    disk: 600
+    networks:
+      - name: vlan-23
+    default_network: true 
+    chef:
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.23.0.46
+              netmask: 255.255.255.0
+              gateway: 10.23.0.5              
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com              
+      run_list:
+      - role[us-co01]
+      - role[ns-docs]
+      - role[virtual-host]
+
+
+#----------------------------------------
+# swift VMs given there is no swift
+# physical infrastructure
+#----------------------------------------
+
+  - name: os-swift1
+    cores: 1
+    memory: 2048
+    disk: 600
+    extra_disks:
+      - path: "/var/lib/uvtool/libvirt/images/os-swift1-addon.qcow"
+        size: "300"
+        dev: vdc 
+    networks:
+      - name: vlan-24
+    default_network: true 
+    chef:
+      override:
+        openstack:
+          object-storage:
+            ring:
+              zone: "1"
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.24.0.20
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.24.0.5
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.24.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-object-storage-node]
+      - role[os-object-storage-admin]
+      - role[virtual-host]
+
+  - name: os-swift2
+    cores: 1
+    memory: 2048
+    disk: 600
+    extra_disks:
+      - path: "/var/lib/uvtool/libvirt/images/os-swift2-addon.qcow"
+        size: "300"
+        dev: vdc    
+    networks:
+      - name: vlan-24
+    default_network: true 
+    chef:
+      override:
+        openstack:
+          object-storage:
+            ring:
+              zone: "2"
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.24.0.21
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.24.0.5
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.24.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-object-storage-node]
+      - role[virtual-host]
+
+  - name: os-swift3
+    cores: 1
+    memory: 2048
+    disk: 600
+    extra_disks:
+      - path: "/var/lib/uvtool/libvirt/images/os-swift3-addon.qcow"
+        size: "300"
+        dev: vdc
+    networks:
+      - name: vlan-24
+    default_network: true 
+    chef:
+      override:
+        openstack:
+          object-storage:
+            ring:
+              zone: "3"    
+      normal:
+        networking:
+          dhcp_gateway: false
+          virtual: true
+          interfaces:
+            eth0:
+              type: dhcp
+            eth1:
+              force_gateway: true
+              address: 10.24.0.22
+              dns-nameservers: *id001
+              dns-search: int.compute.us-co01.cloud.tele.com
+              gateway: 10.24.0.5
+              netmask: 255.255.255.0
+              routes: 
+                10.0.0.0/9:
+                  10.24.0.1
+      run_list:
+      - role[us-co01]
+      - role[os-object-storage-node]
+      - role[virtual-host]
