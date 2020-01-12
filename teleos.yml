@@ -11,7 +11,7 @@
 # 10.24.0.2/24      - Storage
 # 10.25.0.2/24      - Tunnels
 
-# cidrs available in tele env
+# cidrs available in tele02 env
 # 64.124.6.0/24, 64.124.7.0/24, 64.124.220.0/24. 
 
 
