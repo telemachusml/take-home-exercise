@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # teleos rev 10
+=======
+# teleos rev 09
+>>>>>>> 42f231c70dd29002cd2b52c1f03748158f1e5989
 
 #  X 64.124.7.0/27     - for TOR assignments (split into /30s)
 # 10 64.124.6.32/27    - CloudBuilder/NAT
