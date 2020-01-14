@@ -1,4 +1,4 @@
-# teleos rev 11
+# teleos rev 12
 
 #  X 64.124.7.0/27     - for TOR assignments (split into /30s)
 # 10 64.124.6.32/27    - CloudBuilder/NAT
@@ -3065,7 +3065,7 @@ nodes:
   vendor_model: Quanta T41S-2U
   boot_disk_tag: sata
 
-# four internal nodes
+# four controller nodes
 - chef:
     normal:
       networking:
@@ -3099,11 +3099,11 @@ nodes:
     override: {}
     run_list:
     - role[us-co01]
-    - role[internal-node]
+    - role[controller-node]
   name: o26b1r1
   netboot_ip: 10.20.0.27
   netboot_mac: 00:00:00:00:00:00
-  node_type: INTERNAL_NODE
+  node_type: CONTROLLER_NODE
   ops_ip: 10.22.0.27
   overlay_ip: 10.23.0.27
   position_in_rack: 22
@@ -3148,11 +3148,11 @@ nodes:
     override: {}
     run_list:
     - role[us-co01]
-    - role[internal-node]
+    - role[controller-node]
   name: o26b2r1
   netboot_ip: 10.20.0.28
   netboot_mac: 00:00:00:00:00:00
-  node_type: INTERNAL_NODE
+  node_type: CONTROLLER_NODE
   ops_ip: 10.22.0.28
   overlay_ip: 10.23.0.28
   position_in_rack: 22
@@ -3197,11 +3197,11 @@ nodes:
     override: {}
     run_list:
     - role[us-co01]
-    - role[internal-node]
+    - role[controller-node]
   name: o26b3r1
   netboot_ip: 10.20.0.29
   netboot_mac: 00:00:00:00:00:00
-  node_type: INTERNAL_NODE
+  node_type: CONTROLLER_NODE
   ops_ip: 10.22.0.29
   overlay_ip: 10.23.0.29
   position_in_rack: 22
@@ -3246,11 +3246,11 @@ nodes:
     override: {}
     run_list:
     - role[us-co01]
-    - role[internal-node]
+    - role[controller-node]
   name: o26b4r1
   netboot_ip: 10.20.0.30
   netboot_mac: 00:00:00:00:00:00
-  node_type: INTERNAL_NODE
+  node_type: CONTROLLER_NODE
   ops_ip: 10.22.0.30
   overlay_ip: 10.23.0.30
   position_in_rack: 22
