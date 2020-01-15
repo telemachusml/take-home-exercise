@@ -1,4 +1,4 @@
-# teleos rev 12
+# teleos rev 13
 
 #  X 64.124.7.0/27     - for TOR assignments (split into /30s)
 # 10 64.124.6.32/27    - CloudBuilder/NAT
@@ -15,7 +15,6 @@
 
 # cidrs available in tele env
 # 64.124.6.0/24, 64.124.7.0/24, 64.124.220.0/24. 
-
 
 
 chef:
